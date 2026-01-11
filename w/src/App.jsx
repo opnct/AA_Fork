@@ -290,17 +290,20 @@ const App = () => {
            <div className="absolute top-10 right-10 w-32 h-32 rounded-full border-2 border-dashed border-gray-300 animate-spin-slow opacity-50 pointer-events-none"></div>
            
            <h2 className="font-bold text-lg mb-4 text-blue-600 uppercase tracking-widest">Multi-Disciplinary Professional</h2>
-           <h1 className="text-6xl lg:text-8xl font-black mb-6 leading-[0.9] tracking-tighter">
-            BUILD.<br />SECURE.<br /><span className="text-blue-600">GROW.</span>
+           {/* UPDATED: text-5xl for mobile, text-6xl for tablet, text-8xl for desktop */}
+           <h1 className="text-5xl sm:text-6xl lg:text-8xl font-black mb-6 leading-[0.9] tracking-tighter break-words">
+           BUILD.<br />SECURE.<br /><span className="text-blue-600">GROW.</span>
            </h1>
            <p className="text-xl text-gray-600 max-w-md mb-10 font-medium leading-relaxed">
              I help businesses build robust web solutions, secure their infrastructure, and grow their digital presence.
            </p>
            <div className="flex flex-col sm:flex-row gap-4">
-             <button onClick={() => navigate('services')} className="px-8 py-4 bg-black text-white text-lg font-bold uppercase tracking-widest border-2 border-black hover:translate-x-1 hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all flex items-center gap-3">
+             {/* UPDATED: Added justify-center to center content in mobile view */}
+             <button onClick={() => navigate('services')} className="px-8 py-4 bg-black text-white text-lg font-bold uppercase tracking-widest border-2 border-black hover:translate-x-1 hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all flex items-center justify-center gap-3">
                View Services <ArrowRight size={20} />
              </button>
-             <button onClick={() => navigate('contact')} className="px-8 py-4 bg-white text-black text-lg font-bold uppercase tracking-widest border-2 border-black hover:bg-blue-50 transition-all">
+             {/* UPDATED: Added justify-center to center content in mobile view */}
+             <button onClick={() => navigate('contact')} className="px-8 py-4 bg-white text-black text-lg font-bold uppercase tracking-widest border-2 border-black hover:bg-blue-50 transition-all flex items-center justify-center">
                Get a Quote
              </button>
            </div>
