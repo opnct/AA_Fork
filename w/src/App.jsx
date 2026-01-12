@@ -67,7 +67,7 @@ const App = () => {
 
     const text = `*New Inquiry from Portfolio*\n\n*Name:* ${name}\n*Email:* ${email}\n*Service:* ${service}\n*Message:* ${message}`;
     const encodedText = encodeURIComponent(text);
-    window.open(`https://wa.me/918329000442?text=${encodedText}`, '_blank');
+    window.open(`https://wa.me/918329004424?text=${encodedText}`, '_blank');
   };
 
   // --- Data & Content ---
@@ -733,7 +733,7 @@ const App = () => {
                   <div className="w-12 h-12 bg-white text-blue-600 border-2 border-black flex items-center justify-center rounded-full">
                     <Phone size={24} />
                   </div>
-                  +91 83290 00442
+                  +91 83290 04424
                 </div>
                 <a href="https://linkedin.com/in/arun-ammisetty" target="_blank" rel="noreferrer" className="flex items-center gap-4 text-xl font-bold hover:underline">
                   <div className="w-12 h-12 bg-white text-blue-600 border-2 border-black flex items-center justify-center rounded-full">
@@ -862,7 +862,7 @@ const App = () => {
                 </div>
                 <div>
                     <p className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1">Phone</p>
-                    <p className="font-bold text-lg">+91 83290 00442</p>
+                    <p className="font-bold text-lg">+91 83290 04424</p>
                 </div>
                 <div>
                     <p className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1">HQ</p>
@@ -910,14 +910,14 @@ const App = () => {
           </button>
         )}
         <a 
-          href="tel:+918329000442"
+          href="tel:+918329004424"
           className="w-12 h-12 bg-blue-600 text-white border-2 border-black flex items-center justify-center shadow-[4px_4px_0px_0px_#000] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all"
           title="Call Now"
         >
           <Phone size={24} />
         </a>
         <a 
-          href="https://wa.me/918329000442"
+          href="https://wa.me/918329004424"
           target="_blank"
           rel="noreferrer"
           className="w-12 h-12 bg-green-500 text-white border-2 border-black flex items-center justify-center shadow-[4px_4px_0px_0px_#000] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all"
