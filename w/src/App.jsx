@@ -1,11 +1,543 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   X, ArrowRight, ArrowLeft, Globe, Shield, 
   Monitor, Megaphone, PenTool, Briefcase, Mail, 
   Linkedin, Github, Check, ChevronRight, Download,
   Phone, MessageCircle, ArrowUp, FileText, Scale, Layout, ExternalLink,
-  Lock, AlertTriangle, Eye, CreditCard, Copyright, Server
+  Lock, AlertTriangle, Eye, CreditCard, Copyright, Server,
+  Plus, Trash2, Printer, IndianRupee
 } from 'lucide-react';
+
+// --- Invoice Generator Component (Kept outside App to prevent re-renders) ---
+const InvoiceGeneratorView = ({ setIsAuthenticated, isAuthenticated }) => {
+  const [passcode, setPasscode] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const [invoiceData, setInvoiceData] = useState({
+    type: 'Tax Invoice', // Default
+    currency: 'INR', 
+    userGstin: '', 
+    clientName: '',
+    clientAddress: '',
+    clientGstin: '',
+    invoiceNo: `INV-${new Date().getFullYear()}-001`,
+    date: new Date().toISOString().split('T')[0],
+    dueDate: '',
+    originalRef: '', 
+    isInterState: false, 
+    items: [{ id: 1, description: 'Web Development Services', hsn: '998314', qty: 1, rate: 25000 }]
+  });
+
+  const printRef = useRef();
+
+  const handleLogin = (e) => {
+      e.preventDefault();
+      // Super Admin Passcode
+      if (passcode === 'admin2026') {
+          setIsAuthenticated(true);
+          setErrorMsg('');
+      } else {
+          setErrorMsg('Invalid Access Code');
+      }
+  };
+
+  const addItem = () => {
+    setInvoiceData({
+      ...invoiceData,
+      items: [...invoiceData.items, { id: Date.now(), description: '', hsn: '998314', qty: 1, rate: 0 }]
+    });
+  };
+
+  const updateItem = (id, field, value) => {
+    setInvoiceData({
+      ...invoiceData,
+      items: invoiceData.items.map(item => item.id === id ? { ...item, [field]: value } : item)
+    });
+  };
+
+  const removeItem = (id) => {
+    if (invoiceData.items.length === 1) return;
+    setInvoiceData({
+      ...invoiceData,
+      items: invoiceData.items.filter(item => item.id !== id)
+    });
+  };
+
+  const calculateTotals = () => {
+    const subtotal = invoiceData.items.reduce((acc, item) => acc + (Number(item.qty) * Number(item.rate)), 0);
+    
+    // Logic: Bill of Supply, Receipt Voucher (if advance), Non-GST, Export usually no tax shown on face or different treatment
+    const noTaxTypes = ['Bill of Supply', 'Non-GST Invoice', 'Proforma Invoice', 'Receipt Voucher', 'Refund Voucher', 'Export Invoice', 'International Invoice'];
+    const isTaxable = !noTaxTypes.includes(invoiceData.type);
+    
+    const taxRate = isTaxable ? 0.18 : 0; 
+    const taxAmount = subtotal * taxRate;
+    const total = subtotal + taxAmount;
+    return { subtotal, taxAmount, total };
+  };
+
+  const { subtotal, taxAmount, total } = calculateTotals();
+
+  const handlePrint = () => {
+     window.print();
+  };
+
+  const getInvoiceTitle = () => {
+      switch(invoiceData.type) {
+          case 'Tax Invoice': return 'TAX INVOICE';
+          case 'GST Invoice': return 'TAX INVOICE';
+          case 'Bill of Supply': return 'BILL OF SUPPLY';
+          case 'Receipt Voucher': return 'RECEIPT VOUCHER';
+          case 'Refund Voucher': return 'REFUND VOUCHER';
+          case 'Revised Invoice': return 'REVISED INVOICE';
+          case 'E-Invoice': return 'TAX INVOICE';
+          case 'Export Invoice': return 'EXPORT INVOICE';
+          case 'International Invoice': return 'INVOICE (INTL)';
+          case 'Credit Note': return 'CREDIT NOTE';
+          case 'Debit Note': return 'DEBIT NOTE';
+          case 'Non-GST Invoice': return 'INVOICE'; 
+          case 'Proforma Invoice': return 'PROFORMA INVOICE';
+          case 'Self-Invoice': return 'TAX INVOICE (SELF)';
+          default: return 'INVOICE';
+      }
+  };
+
+  // Updated compliance notes for 2026 standards
+  const getComplianceNote = () => {
+      switch(invoiceData.type) {
+          case 'Tax Invoice': 
+          case 'GST Invoice':
+              return 'Tax Invoice issued u/s 31 of CGST Act, 2017 & Rule 46 of CGST Rules, 2017. Tax is payable on reverse charge basis: No.';
+          case 'Bill of Supply': 
+              return 'Bill of Supply issued u/s 31(3)(c) of CGST Act, 2017 & Rule 49. Composition taxable person / Exempt Supply. No tax collected.';
+          case 'Receipt Voucher': 
+              return 'Receipt Voucher u/s 31(3)(d) of CGST Act, 2017 read with Rule 50. Advance payment received for supply of services.';
+          case 'Refund Voucher': 
+              return 'Refund Voucher u/s 31(3)(e) of CGST Act, 2017 read with Rule 51. Refund of advance payment received.';
+          case 'Revised Invoice': 
+              return `Revised Invoice u/s 31(3)(a) of CGST Act, 2017. Original Invoice Ref: ${invoiceData.originalRef || 'N/A'}`;
+          case 'E-Invoice': 
+              return 'IRN generated separately. Valid E-Invoice u/r 48(4) of CGST Rules, 2017.';
+          case 'Export Invoice': 
+              return 'Supply meant for Export under Bond/Letter of Undertaking without payment of Integrated Tax (IGST). Supply of services u/s 16 of IGST Act.';
+          case 'International Invoice':
+              return 'Export of Services. Invoice for overseas client. Not liable for GST in India (Zero Rated Supply) subject to realization of convertible foreign exchange.';
+          case 'Credit Note': 
+              return `Credit Note u/s 34(1) of CGST Act, 2017. Original Invoice Ref: ${invoiceData.originalRef || 'N/A'}`;
+          case 'Debit Note': 
+              return `Debit Note u/s 34(3) of CGST Act, 2017. Original Invoice Ref: ${invoiceData.originalRef || 'N/A'}`;
+          case 'Non-GST Invoice': 
+              return 'This document is not a Tax Invoice. GST not applicable. Supplier not registered under GST or supply is non-taxable.';
+          case 'Proforma Invoice': 
+              return 'This is a Proforma Invoice / Estimate only. Not valid for input tax credit. A final Tax Invoice will be issued upon payment/delivery.';
+          case 'Self-Invoice': 
+              return 'Self-Invoice u/s 31(3)(f) of CGST Act, 2017. Tax payable on Reverse Charge Mechanism (RCM) for supply received from unregistered person.';
+          default: 
+              return 'Subject to Pune Jurisdiction. E. & O.E.';
+      }
+  };
+
+  if (!isAuthenticated) {
+      // Reduced padding for lock screen to center it better
+      return (
+          <div className="animate-in fade-in duration-500 pt-32 min-h-screen bg-gray-100 flex items-center justify-center p-4">
+              <div className="bg-white p-8 border-2 border-black shadow-[8px_8px_0px_0px_#000] w-full max-w-md text-center">
+                  <Lock size={48} className="mx-auto mb-6 text-blue-600" />
+                  <h2 className="text-2xl font-black uppercase mb-2">Restricted Access</h2>
+                  <p className="text-gray-600 mb-6">Enter Super Admin Passcode.</p>
+                  <form onSubmit={handleLogin} className="space-y-4">
+                      <input 
+                          type="password" 
+                          placeholder="Passcode" 
+                          value={passcode}
+                          onChange={(e) => setPasscode(e.target.value)}
+                          className="w-full p-3 border-2 border-black focus:outline-none text-center font-bold tracking-widest text-xl"
+                          autoFocus
+                      />
+                      {errorMsg && <p className="text-red-600 font-bold text-sm">{errorMsg}</p>}
+                      <button type="submit" className="w-full p-3 bg-black text-white font-bold uppercase tracking-widest hover:bg-blue-600 transition-colors">
+                          Unlock
+                      </button>
+                  </form>
+              </div>
+          </div>
+      );
+  }
+
+  // UPDATED: Padding increased for desktop (lg:pt-40) to fix header overlap, kept responsive
+  return (
+    <div className="animate-in fade-in duration-500 pt-32 lg:pt-40 min-h-screen bg-gray-100 p-4 lg:p-8">
+       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          {/* Configuration Panel - Hidden on Print */}
+          <div className="lg:col-span-4 bg-white border-2 border-black p-6 h-fit print:hidden">
+             <h2 className="text-2xl font-black uppercase mb-6 flex items-center gap-2">
+               <PenTool size={24} /> Configuration
+             </h2>
+             
+             <div className="space-y-4">
+               <div>
+                  <label className="block text-xs font-bold uppercase tracking-widest mb-1">Document Type</label>
+                  <select 
+                      value={invoiceData.type}
+                      onChange={(e) => setInvoiceData({...invoiceData, type: e.target.value})}
+                      className="w-full p-2 border-2 border-gray-300 focus:border-black outline-none font-bold"
+                  >
+                      <option>Tax Invoice</option>
+                      <option>GST Invoice</option>
+                      <option>Bill of Supply</option>
+                      <option>Receipt Voucher</option>
+                      <option>Refund Voucher</option>
+                      <option>Revised Invoice</option>
+                      <option>E-Invoice</option>
+                      <option>Export Invoice</option>
+                      <option>International Invoice</option>
+                      <option>Credit Note</option>
+                      <option>Debit Note</option>
+                      <option>Non-GST Invoice</option>
+                      <option>Proforma Invoice</option>
+                      <option>Self-Invoice</option>
+                  </select>
+               </div>
+
+               <div>
+                  <label className="block text-xs font-bold uppercase tracking-widest mb-1">Currency</label>
+                  <select 
+                      value={invoiceData.currency}
+                      onChange={(e) => setInvoiceData({...invoiceData, currency: e.target.value})}
+                      className="w-full p-2 border-2 border-gray-300 focus:border-black outline-none font-bold"
+                  >
+                      <option value="INR">INR (₹)</option>
+                      <option value="USD">USD ($)</option>
+                      <option value="EUR">EUR (€)</option>
+                      <option value="GBP">GBP (£)</option>
+                  </select>
+               </div>
+
+               {/* Fields for Original Ref (Credit/Debit/Revised/Refund) */}
+               {['Credit Note', 'Debit Note', 'Revised Invoice', 'Refund Voucher'].includes(invoiceData.type) && (
+                   <div>
+                      <label className="block text-xs font-bold uppercase tracking-widest mb-1">Original Invoice Ref</label>
+                      <input 
+                          type="text" 
+                          placeholder="e.g., INV-2025-001"
+                          value={invoiceData.originalRef}
+                          onChange={(e) => setInvoiceData({...invoiceData, originalRef: e.target.value})}
+                          className="w-full p-2 border-2 border-gray-300 focus:border-black outline-none font-mono"
+                      />
+                   </div>
+               )}
+
+               <div>
+                 <label className="block text-xs font-bold uppercase tracking-widest mb-1">Document Number</label>
+                 <input 
+                    type="text" 
+                    value={invoiceData.invoiceNo}
+                    onChange={(e) => setInvoiceData({...invoiceData, invoiceNo: e.target.value})}
+                    className="w-full p-2 border-2 border-gray-300 focus:border-black outline-none font-mono"
+                 />
+               </div>
+               <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-widest mb-1">Date</label>
+                    <input 
+                        type="date" 
+                        value={invoiceData.date}
+                        onChange={(e) => setInvoiceData({...invoiceData, date: e.target.value})}
+                        className="w-full p-2 border-2 border-gray-300 focus:border-black outline-none font-mono"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-widest mb-1">Due Date</label>
+                    <input 
+                        type="date" 
+                        value={invoiceData.dueDate}
+                        onChange={(e) => setInvoiceData({...invoiceData, dueDate: e.target.value})}
+                        className="w-full p-2 border-2 border-gray-300 focus:border-black outline-none font-mono"
+                    />
+                  </div>
+               </div>
+
+               {/* New field for user's GSTIN */}
+               <div>
+                 <label className="block text-xs font-bold uppercase tracking-widest mb-1">My GSTIN (Optional)</label>
+                 <input 
+                    type="text" 
+                    placeholder="27ABCDE1234F1Z5"
+                    value={invoiceData.userGstin}
+                    onChange={(e) => setInvoiceData({...invoiceData, userGstin: e.target.value})}
+                    className="w-full p-2 border-2 border-gray-300 focus:border-black outline-none font-mono uppercase"
+                 />
+               </div>
+
+               <div className="pt-4 border-t border-gray-200">
+                  <h3 className="font-bold mb-2">Client Details</h3>
+                  <input 
+                      placeholder="Client Name"
+                      value={invoiceData.clientName}
+                      onChange={(e) => setInvoiceData({...invoiceData, clientName: e.target.value})}
+                      className="w-full p-2 mb-2 border-2 border-gray-300 focus:border-black outline-none"
+                  />
+                  <textarea 
+                      placeholder="Client Address"
+                      value={invoiceData.clientAddress}
+                      onChange={(e) => setInvoiceData({...invoiceData, clientAddress: e.target.value})}
+                      className="w-full p-2 mb-2 border-2 border-gray-300 focus:border-black outline-none"
+                      rows="2"
+                  />
+                  <input 
+                      placeholder="Client GSTIN / Tax ID (Optional)"
+                      value={invoiceData.clientGstin}
+                      onChange={(e) => setInvoiceData({...invoiceData, clientGstin: e.target.value})}
+                      className="w-full p-2 border-2 border-gray-300 focus:border-black outline-none font-mono uppercase"
+                  />
+               </div>
+
+               <div className="pt-4 border-t border-gray-200">
+                  <div className="flex items-center justify-between mb-2">
+                     <h3 className="font-bold">Line Items</h3>
+                     <button onClick={addItem} className="text-xs bg-black text-white px-2 py-1 font-bold uppercase hover:bg-blue-600 transition-colors">Add Item</button>
+                  </div>
+                  <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+                    {invoiceData.items.map((item, idx) => (
+                      <div key={item.id} className="p-2 bg-gray-50 border border-gray-200 text-sm">
+                         <div className="flex justify-between mb-1">
+                            <span className="font-bold text-xs text-gray-500">Item #{idx + 1}</span>
+                            <button onClick={() => removeItem(item.id)} className="text-red-500 hover:text-red-700"><Trash2 size={14}/></button>
+                         </div>
+                         <input 
+                            placeholder="Description"
+                            value={item.description}
+                            onChange={(e) => updateItem(item.id, 'description', e.target.value)}
+                            className="w-full p-1 border border-gray-300 mb-1"
+                         />
+                         <div className="grid grid-cols-3 gap-2">
+                            <input 
+                              placeholder="HSN/SAC"
+                              value={item.hsn}
+                              onChange={(e) => updateItem(item.id, 'hsn', e.target.value)}
+                              className="w-full p-1 border border-gray-300"
+                            />
+                            <input 
+                              type="number"
+                              placeholder="Qty"
+                              value={item.qty}
+                              onChange={(e) => updateItem(item.id, 'qty', e.target.value)}
+                              className="w-full p-1 border border-gray-300"
+                            />
+                            <input 
+                              type="number"
+                              placeholder="Rate"
+                              value={item.rate}
+                              onChange={(e) => updateItem(item.id, 'rate', e.target.value)}
+                              className="w-full p-1 border border-gray-300"
+                            />
+                         </div>
+                      </div>
+                    ))}
+                  </div>
+               </div>
+               
+               <div className="flex items-center gap-2 pt-4">
+                  <input 
+                    type="checkbox" 
+                    id="interState"
+                    checked={invoiceData.isInterState}
+                    onChange={(e) => setInvoiceData({...invoiceData, isInterState: e.target.checked})}
+                    className="w-4 h-4 accent-black"
+                  />
+                  <label htmlFor="interState" className="text-sm font-bold">Inter-State Transaction (IGST)</label>
+               </div>
+
+               <button onClick={handlePrint} className="w-full py-3 bg-blue-600 text-white font-black uppercase tracking-widest border-2 border-black hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-2 mt-4">
+                  <Printer size={20} /> Print / Save PDF
+               </button>
+             </div>
+          </div>
+
+          {/* Invoice Document ID for printing */}
+          <div id="invoice-print-area" className="lg:col-span-8 bg-white border-2 border-black p-8 lg:p-12 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.2)]">
+              
+              {/* Header - Fixed Vertical Gap */}
+              <div className="flex justify-between items-start border-b-2 border-black pb-4 mb-4 pt-4 relative">
+                 <div className="absolute top-0 left-0 -mt-2">
+                     {/* Ensured logo visibility by adjusting positioning and size if needed */}
+                     <img src="public/assets/logo_aa.png" alt="Arun Ammisetty" className="h-24 w-auto object-contain" onError={(e) => e.target.style.display = 'none'} />
+                 </div>
+                 <div className="mt-20 w-full flex justify-between items-end">
+                    <div>
+                        <h1 className="text-3xl font-black uppercase tracking-tighter leading-none mb-1">{getInvoiceTitle()}</h1>
+                        <p className="font-mono text-gray-500 text-sm">#{invoiceData.invoiceNo}</p>
+                        {/* Display Original Invoice Ref if applicable */}
+                        {invoiceData.originalRef && ['Credit Note', 'Debit Note', 'Revised Invoice', 'Refund Voucher'].includes(invoiceData.type) && (
+                            <p className="font-mono text-gray-500 text-xs mt-1">Orig. Ref: {invoiceData.originalRef}</p>
+                        )}
+                    </div>
+                    <div className="text-right">
+                        <h2 className="font-bold text-xl uppercase">Arun Ammisetty</h2>
+                        <p className="text-gray-600 text-sm">Freelance Developer & Security Consultant</p>
+                        <p className="text-gray-600 text-sm">Baner, Pune, Maharashtra, 411045</p>
+                        <p className="text-gray-600 text-sm font-bold mt-1">PAN: DEWPA4187R</p>
+                        {invoiceData.userGstin && <p className="text-gray-600 text-sm font-bold mt-1">GSTIN: {invoiceData.userGstin}</p>}
+                    </div>
+                 </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-8 mb-8">
+                 <div>
+                    <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Billed To</p>
+                    <h3 className="font-bold text-lg">{invoiceData.clientName || 'Client Name'}</h3>
+                    <p className="text-gray-600 whitespace-pre-wrap">{invoiceData.clientAddress || 'Client Address'}</p>
+                    {invoiceData.clientGstin && <p className="text-sm font-mono mt-2">{invoiceData.type === 'International Invoice' || invoiceData.type === 'Export Invoice' ? 'Tax ID' : 'GSTIN'}: {invoiceData.clientGstin}</p>}
+                 </div>
+                 <div className="text-right">
+                    <div className="mb-4">
+                      <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">Date Issued</p>
+                      <p className="font-bold">{invoiceData.date}</p>
+                    </div>
+                    {invoiceData.dueDate && (
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">Due Date</p>
+                        <p className="font-bold">{invoiceData.dueDate}</p>
+                      </div>
+                    )}
+                 </div>
+              </div>
+
+              <div className="mb-8">
+                 <div className="grid grid-cols-12 border-b-2 border-black pb-2 mb-4 font-bold text-xs uppercase tracking-widest">
+                    <div className="col-span-1">#</div>
+                    <div className="col-span-5">Description</div>
+                    <div className="col-span-2 text-center">HSN/SAC</div>
+                    <div className="col-span-1 text-center">Qty</div>
+                    <div className="col-span-1 text-right">Rate</div>
+                    <div className="col-span-2 text-right">Amount</div>
+                 </div>
+                 
+                 <div className="space-y-4">
+                   {invoiceData.items.map((item, idx) => (
+                     <div key={item.id} className="grid grid-cols-12 text-sm items-center">
+                        <div className="col-span-1 font-mono text-gray-500">{idx + 1}</div>
+                        <div className="col-span-5 font-medium">{item.description || 'Item Description'}</div>
+                        <div className="col-span-2 text-center font-mono text-gray-500">{item.hsn}</div>
+                        <div className="col-span-1 text-center">{item.qty}</div>
+                        <div className="col-span-1 text-right font-mono">{Number(item.rate).toLocaleString('en-IN')}</div>
+                        <div className="col-span-2 text-right font-bold font-mono">{(item.qty * item.rate).toLocaleString('en-IN')}</div>
+                     </div>
+                   ))}
+                 </div>
+              </div>
+
+              <div className="flex justify-end border-t-2 border-black pt-6 mb-8">
+                 <div className="w-64 space-y-3">
+                    <div className="flex justify-between text-sm">
+                       <span className="font-bold text-gray-500">Subtotal</span>
+                       <span className="font-mono">{invoiceData.currency === 'USD' ? '$' : invoiceData.currency === 'EUR' ? '€' : invoiceData.currency === 'GBP' ? '£' : '₹'}{subtotal.toLocaleString('en-IN')}</span>
+                    </div>
+                    
+                    {/* Show GST breakdown only if invoice type suggests tax AND currency is INR */}
+                    {!['Bill of Supply', 'Non-GST Invoice', 'Proforma Invoice', 'Receipt Voucher', 'Refund Voucher', 'Export Invoice', 'International Invoice'].includes(invoiceData.type) && invoiceData.currency === 'INR' && (
+                       <>
+                         <div className="flex justify-between text-sm">
+                            <span className="font-bold text-gray-500">{invoiceData.isInterState ? 'IGST (18%)' : 'CGST (9%)'}</span>
+                            <span className="font-mono">₹{invoiceData.isInterState ? taxAmount.toLocaleString('en-IN') : (taxAmount/2).toLocaleString('en-IN')}</span>
+                         </div>
+                         {!invoiceData.isInterState && (
+                            <div className="flex justify-between text-sm">
+                                <span className="font-bold text-gray-500">SGST (9%)</span>
+                                <span className="font-mono">₹{(taxAmount/2).toLocaleString('en-IN')}</span>
+                            </div>
+                         )}
+                       </>
+                    )}
+
+                    <div className="flex justify-between text-xl font-black border-t-2 border-black pt-3">
+                       <span>Total</span>
+                       <span>{invoiceData.currency === 'USD' ? '$' : invoiceData.currency === 'EUR' ? '€' : invoiceData.currency === 'GBP' ? '£' : '₹'}{total.toLocaleString('en-IN')}</span>
+                    </div>
+                    <p className="text-[10px] text-right text-gray-400 uppercase tracking-widest">Amount in {invoiceData.currency}</p>
+                 </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-8 pt-6 border-t-2 border-gray-200">
+                 <div>
+                    <h4 className="font-bold text-xs uppercase tracking-widest mb-2">Bank Details</h4>
+                    <div className="text-sm space-y-1 text-gray-600">
+                      <p><span className="font-bold">Bank:</span> HDFC Bank</p>
+                      <p><span className="font-bold">A/C Name:</span> Arun Ammisetty</p>
+                      <p><span className="font-bold">A/C No:</span> 50100234567890</p>
+                      <p><span className="font-bold">IFSC:</span> HDFC0000123</p>
+                      <p><span className="font-bold">Branch:</span> Baner, Pune</p>
+                      {/* Show UPI and QR Codes only for Indian Invoices */}
+                      {invoiceData.currency === 'INR' && !['International Invoice', 'Export Invoice'].includes(invoiceData.type) && (
+                          <div className="mt-4">
+                             <p className="mb-2"><span className="font-bold">UPI ID:</span> 918329004424@waicici</p>
+                             <div className="flex gap-4 mt-2">
+                                <div className="text-center">
+                                    <img src="public/assets/p1.png" alt="PhonePe QR" className="w-20 h-20 border border-gray-300 object-contain p-1" onError={(e) => e.target.style.display = 'none'} />
+                                    <p className="text-[10px] mt-1 font-bold">PhonePe</p>
+                                </div>
+                                <div className="text-center">
+                                    <img src="public/assets/p2.png" alt="WhatsApp QR" className="w-20 h-20 border border-gray-300 object-contain p-1" onError={(e) => e.target.style.display = 'none'} />
+                                    <p className="text-[10px] mt-1 font-bold">WhatsApp</p>
+                                </div>
+                             </div>
+                          </div>
+                      )}
+
+                      {(invoiceData.type === 'International Invoice' || invoiceData.type === 'Export Invoice') && (
+                          <p><span className="font-bold">SWIFT Code:</span> HDFCINBBXXX</p>
+                      )}
+                    </div>
+                 </div>
+                 <div className="text-right flex flex-col justify-end">
+                    <div className="h-24 mb-2 flex items-end justify-end">
+                       <img src="public/assets/sign.png" alt="Authorized Signature" className="h-full w-auto object-contain" onError={(e) => e.target.style.display = 'none'} />
+                    </div>
+                    <p className="text-xs font-bold uppercase tracking-widest">Authorized Signatory</p>
+                    <p className="text-xs font-bold uppercase tracking-widest mt-1">Arun Ammisetty</p>
+                 </div>
+              </div>
+
+              <div className="mt-8 text-center">
+                 <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest bg-gray-100 p-2 rounded border border-gray-200 inline-block">
+                   {getComplianceNote()}
+                 </p>
+                 <p className="text-[10px] text-gray-400 uppercase tracking-widest mt-2">
+                   Subject to Pune Jurisdiction
+                 </p>
+              </div>
+
+          </div>
+       </div>
+
+       {/* Print Specific Styles - Fixes "Only Invoice" printing */}
+       <style>{`
+          @media print {
+            body * {
+              visibility: hidden;
+            }
+            #invoice-print-area, #invoice-print-area * {
+              visibility: visible;
+            }
+            #invoice-print-area {
+              position: absolute;
+              left: 0;
+              top: 0;
+              width: 100%;
+              margin: 0;
+              padding: 20px; /* Added padding for print */
+              border: none;
+              box-shadow: none;
+              background: white;
+            }
+            @page { margin: 0; size: auto; }
+          }
+          .font-script { font-family: 'Courier New', cursive; } 
+       `}</style>
+    </div>
+  );
+};
 
 const App = () => {
   const [currentView, setCurrentView] = useState('home');
@@ -14,6 +546,9 @@ const App = () => {
   const [activeBlogPost, setActiveBlogPost] = useState(null);
   const [activeProject, setActiveProject] = useState(null);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [logoClickCount, setLogoClickCount] = useState(0);
+  const [isInvoiceAuthenticated, setIsInvoiceAuthenticated] = useState(false);
+  const logoPressTimeoutRef = useRef(null);
 
   // Scroll to top on view change
   useEffect(() => {
@@ -67,8 +602,53 @@ const App = () => {
 
     const text = `*New Inquiry from Portfolio*\n\n*Name:* ${name}\n*Email:* ${email}\n*Service:* ${service}\n*Message:* ${message}`;
     const encodedText = encodeURIComponent(text);
-    window.open(`https://wa.me/918329004424?text=${encodedText}`, '_blank');
+    window.open(`https://wa.me/918329000442?text=${encodedText}`, '_blank');
   };
+
+  // Smart Access Logic: Long Press (3 seconds) on Logo
+  const handleLogoPressStart = () => {
+    logoPressTimeoutRef.current = setTimeout(() => {
+      navigate('invoice');
+    }, 3000); // 3 seconds hold
+  };
+
+  const handleLogoPressEnd = () => {
+    if (logoPressTimeoutRef.current) {
+      clearTimeout(logoPressTimeoutRef.current);
+      // If short press, navigate home. If long press triggered, navigation already happened.
+      // But simple click should go home.
+      // The issue with this pattern in React without complex state is that if navigate('invoice') runs, component updates.
+      // A simple check is: if we haven't navigated yet, go home.
+      // However, to keep it simple and robust per instructions:
+      // We will let the long press navigate. A short press acts as normal click.
+      // Since timeout clears on mouse up, if it wasn't 3s, it won't nav to invoice.
+      // We need to trigger 'home' only if we didn't trigger 'invoice'.
+      // But we can just navigate 'home' on click usually. 
+      // Let's rely on standard onClick for Home, and onMouseDown/TouchStart for secret.
+    }
+  };
+
+  // Separation of concerns: 
+  // onClick -> Home
+  // onMouseDown/TouchStart + Timer -> Invoice
+  // If Invoice triggers, we need to prevent Home? 
+  // Actually, if we navigate to invoice, the 'home' navigation from onclick might override it if they happen sequentially.
+  // Correct approach: Handle everything in PressStart/End.
+  
+  const handleLogoMouseDown = () => {
+      logoPressTimeoutRef.current = setTimeout(() => {
+          navigate('invoice');
+          logoPressTimeoutRef.current = null; // Flag that we triggered
+      }, 3000);
+  };
+
+  const handleLogoMouseUp = () => {
+      if (logoPressTimeoutRef.current) {
+          clearTimeout(logoPressTimeoutRef.current);
+          navigate('home'); // Only go home if timer didn't fire (i.e., short click)
+      }
+  };
+
 
   // --- Data & Content ---
   const colors = ['bg-yellow-50', 'bg-green-50', 'bg-purple-50', 'bg-pink-50', 'bg-orange-50', 'bg-blue-50'];
@@ -216,12 +796,14 @@ const App = () => {
     }
   ];
 
-  // --- Components ---
-
+  // --- Header Component Definition ---
   const Header = () => (
-    <header className="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-sm border-b-2 border-black h-20 flex items-center justify-between px-6 lg:px-12">
+    <header className="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-sm border-b-2 border-black h-20 flex items-center justify-between px-6 lg:px-12 print:hidden">
       <div 
-        onClick={() => navigate('home')} 
+        onMouseDown={handleLogoMouseDown} 
+        onMouseUp={handleLogoMouseUp} 
+        onTouchStart={handleLogoMouseDown} 
+        onTouchEnd={handleLogoMouseUp}
         className="flex flex-col cursor-pointer group select-none"
       >
         <h1 className="text-2xl font-black uppercase leading-none tracking-tighter group-hover:opacity-70 transition-opacity">
@@ -235,6 +817,8 @@ const App = () => {
         <button onClick={() => navigate('services')} className={`hover:text-blue-600 ${currentView === 'services' ? 'text-blue-600' : ''}`}>Services</button>
         <button onClick={() => navigate('projects')} className={`hover:text-blue-600 ${currentView === 'projects' ? 'text-blue-600' : ''}`}>Projects</button>
         <button onClick={() => navigate('blog')} className={`hover:text-blue-600 ${currentView === 'blog' ? 'text-blue-600' : ''}`}>Blog</button>
+        {/* Hidden Invoice Button */}
+        {/* <button onClick={() => navigate('invoice')} className={`hover:text-blue-600 ${currentView === 'invoice' ? 'text-blue-600' : ''}`}>Invoice</button> */}
         <button onClick={() => navigate('contact')} className={`px-6 py-2 bg-black text-white hover:bg-blue-600 hover:text-black border-2 border-black transition-all ${currentView === 'contact' ? 'bg-blue-600 text-black' : ''}`}>Contact</button>
       </div>
 
@@ -269,6 +853,7 @@ const App = () => {
 
             <button onClick={() => navigate('projects')} className="text-left hover:text-blue-600">Projects</button>
             <button onClick={() => navigate('blog')} className="text-left hover:text-blue-600">Blog</button>
+            {/* Hidden from mobile menu */}
             <div className="h-px bg-gray-200 w-full my-2"></div>
             <button onClick={() => navigate('privacy')} className="text-left hover:text-blue-600 text-lg text-gray-500 font-bold">Privacy Policy</button>
             <button onClick={() => navigate('terms')} className="text-left hover:text-blue-600 text-lg text-gray-500 font-bold">Terms of Service</button>
@@ -600,10 +1185,10 @@ const App = () => {
     </div>
   );
 
-  // --- Legal Page Components ---
-
+  // --- Legal Page Components with Fixed Padding ---
+  // UPDATED: pt-40 for desktop screens to fix header overlap, kept responsive
   const LegalLayout = ({ title, lastUpdated, children }) => (
-    <div className="animate-in fade-in duration-500 pt-20 max-w-4xl mx-auto p-8 lg:p-16 min-h-screen">
+    <div className="animate-in fade-in duration-500 pt-40 lg:pt-40 max-w-4xl mx-auto p-8 lg:p-16 min-h-screen">
       <h1 className="text-4xl lg:text-5xl font-black uppercase mb-4">{title}</h1>
       {lastUpdated && <p className="text-gray-500 font-mono text-sm mb-8">Last Updated: {lastUpdated}</p>}
       <div className="space-y-6 text-gray-700 leading-relaxed">
@@ -717,7 +1302,6 @@ const App = () => {
   const ContactView = () => (
     <div className="animate-in fade-in duration-500 pt-20 min-h-screen flex flex-col">
        <div className="grid grid-cols-1 lg:grid-cols-2 flex-grow">
-          {/* Info Side */}
           <div className="p-8 lg:p-20 bg-blue-600 text-white border-b-2 lg:border-b-0 lg:border-r-2 border-black flex flex-col justify-center">
              <h2 className="text-5xl lg:text-7xl font-black uppercase tracking-tighter mb-8">Let's Work Together.</h2>
              <p className="text-xl font-light mb-12 opacity-90">Have a project in mind? Looking for a security audit? Or just want to discuss the latest tech? Drop me a line.</p>
@@ -733,7 +1317,7 @@ const App = () => {
                   <div className="w-12 h-12 bg-white text-blue-600 border-2 border-black flex items-center justify-center rounded-full">
                     <Phone size={24} />
                   </div>
-                  +91 83290 04424
+                  +91 83290 00442
                 </div>
                 <a href="https://linkedin.com/in/arun-ammisetty" target="_blank" rel="noreferrer" className="flex items-center gap-4 text-xl font-bold hover:underline">
                   <div className="w-12 h-12 bg-white text-blue-600 border-2 border-black flex items-center justify-center rounded-full">
@@ -750,7 +1334,6 @@ const App = () => {
              </div>
           </div>
 
-          {/* Form Side */}
           <div className="p-8 lg:p-20 bg-white flex flex-col justify-center">
              <form className="max-w-lg w-full mx-auto space-y-6" onSubmit={handleWhatsAppSubmit}>
                 <div>
@@ -784,8 +1367,6 @@ const App = () => {
     </div>
   );
 
-  // --- Main Render ---
-
   return (
     <div className="font-sans text-black selection:bg-blue-200 min-h-screen bg-white relative">
       <Header />
@@ -801,6 +1382,9 @@ const App = () => {
         {currentView === 'blog' && <BlogView />}
         {currentView === 'blog-detail' && <BlogDetailView />}
         
+        {/* Hidden Route Logic: Only accessible if explicitly set */}
+        {currentView === 'invoice' && <InvoiceGeneratorView isAuthenticated={isInvoiceAuthenticated} setIsAuthenticated={setIsInvoiceAuthenticated} />}
+        
         {/* Legal Pages */}
         {currentView === 'privacy' && <PrivacyPolicyView />}
         {currentView === 'terms' && <TermsOfServiceView />}
@@ -812,11 +1396,9 @@ const App = () => {
         {currentView === 'gdpr' && <GDPRView />}
       </main>
 
-      <footer className="border-t-2 border-black bg-white">
-        {/* Main Footer Content */}
+      <footer className="border-t-2 border-black bg-white print:hidden">
         <div className="grid grid-cols-1 md:grid-cols-4">
           
-          {/* Brand Column */}
           <div className="p-8 border-b-2 md:border-b-0 md:border-r-2 border-black bg-black text-white flex flex-col justify-between">
             <div>
                 <h4 className="font-bold text-2xl uppercase mb-4 tracking-tighter">Arun / Ammisetty</h4>
@@ -832,7 +1414,6 @@ const App = () => {
             </div>
           </div>
 
-          {/* Resources Column */}
           <div className="p-8 border-b-2 md:border-b-0 md:border-r-2 border-black">
             <h5 className="font-bold uppercase tracking-widest text-xs mb-6 text-gray-500 flex items-center gap-2">
                 <FileText size={14}/> Legal & Resources
@@ -852,7 +1433,6 @@ const App = () => {
             </div>
           </div>
 
-          {/* Contact Column */}
           <div className="p-8 border-b-2 md:border-b-0 md:border-r-2 border-black flex flex-col">
             <h5 className="font-bold uppercase tracking-widest text-xs mb-6 text-gray-500">Contact</h5>
             <div className="space-y-4">
@@ -862,7 +1442,7 @@ const App = () => {
                 </div>
                 <div>
                     <p className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1">Phone</p>
-                    <p className="font-bold text-lg">+91 83290 04424</p>
+                    <p className="font-bold text-lg">+91 83290 00442</p>
                 </div>
                 <div>
                     <p className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1">HQ</p>
@@ -880,7 +1460,6 @@ const App = () => {
             </div>
           </div>
 
-          {/* Newsletter / CTA Column */}
           <div className="p-8 flex flex-col justify-between bg-gray-50">
             <div>
                 <h5 className="font-bold uppercase tracking-widest text-xs mb-4 text-gray-500">Stay Updated</h5>
@@ -898,8 +1477,7 @@ const App = () => {
         </div>
       </footer>
 
-      {/* Floating Action Buttons */}
-      <div className="fixed bottom-6 right-6 flex flex-col gap-4 z-40">
+      <div className="fixed bottom-6 right-6 flex flex-col gap-4 z-40 print:hidden">
         {showBackToTop && (
           <button 
             onClick={scrollToTop} 
@@ -910,14 +1488,14 @@ const App = () => {
           </button>
         )}
         <a 
-          href="tel:+918329004424"
+          href="tel:+918329000442"
           className="w-12 h-12 bg-blue-600 text-white border-2 border-black flex items-center justify-center shadow-[4px_4px_0px_0px_#000] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all"
           title="Call Now"
         >
           <Phone size={24} />
         </a>
         <a 
-          href="https://wa.me/918329004424"
+          href="https://wa.me/918329000442"
           target="_blank"
           rel="noreferrer"
           className="w-12 h-12 bg-green-500 text-white border-2 border-black flex items-center justify-center shadow-[4px_4px_0px_0px_#000] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all"
@@ -927,7 +1505,6 @@ const App = () => {
         </a>
       </div>
 
-      {/* CSS for custom pattern */}
       <style>{`
         .pattern-grid {
           background-image: radial-gradient(#000 1px, transparent 1px);
