@@ -901,7 +901,7 @@ const InvoiceGeneratorView = ({ setIsAuthenticated, isAuthenticated }) => {
                                     <p className="text-[10px] mt-1 font-bold">PhonePe</p>
                                 </div>
                                 <div className="text-center">
-                                    <img src="/assets/p1.png" alt="WhatsApp QR" className="w-20 h-20 border border-gray-300 object-contain p-1" onError={(e) => e.target.style.display = 'none'} />
+                                    <img src="/assets/p2.png" alt="WhatsApp QR" className="w-20 h-20 border border-gray-300 object-contain p-1" onError={(e) => e.target.style.display = 'none'} />
                                     <p className="text-[10px] mt-1 font-bold">WhatsApp</p>
                                 </div>
                              </div>
