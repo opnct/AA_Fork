@@ -255,7 +255,7 @@ const ContractGeneratorView = () => {
                              <div>
                                  <p className="text-xs font-bold uppercase tracking-widest mb-4">Signed for and on behalf of<br/><strong>Arun Ammisetty</strong></p>
                                  <div className="h-24 mb-2 relative">
-                                    <img src="public/assets/sign.png" alt="Signed & Stamped" className="h-full object-contain absolute left-0 bottom-0" onError={(e) => e.target.style.display = 'none'} />
+                                    <img src="/assets/sign.png" alt="Signed & Stamped" className="h-full object-contain absolute left-0 bottom-0" onError={(e) => e.target.style.display = 'none'} />
                                  </div>
                                  <div className="border-t border-black pt-2">
                                     <p className="font-bold">Arun Ammisetty</p>
@@ -525,7 +525,7 @@ const InvoiceGeneratorView = ({ setIsAuthenticated, isAuthenticated }) => {
                         </div>
                         <div className="text-right">
                         <div className="h-20 flex justify-end">
-                            <img src="public/assets/sign.png" alt="Signature" className="h-full object-contain" />
+                            <img src="/assets/sign.png" alt="Signature" className="h-full object-contain" />
                         </div>
                         <p className="border-t border-black inline-block px-4 mt-2">Signature</p>
                         <p className="font-bold mt-1">Arun Ammisetty</p>
@@ -897,11 +897,11 @@ const InvoiceGeneratorView = ({ setIsAuthenticated, isAuthenticated }) => {
                              <p className="mb-2"><span className="font-bold">UPI ID:</span> 918329004424@waicici</p>
                              <div className="flex gap-4 mt-2">
                                 <div className="text-center">
-                                    <img src="public/assets/p1.png" alt="PhonePe QR" className="w-20 h-20 border border-gray-300 object-contain p-1" onError={(e) => e.target.style.display = 'none'} />
+                                    <img src="/assets/p1.png" alt="PhonePe QR" className="w-20 h-20 border border-gray-300 object-contain p-1" onError={(e) => e.target.style.display = 'none'} />
                                     <p className="text-[10px] mt-1 font-bold">PhonePe</p>
                                 </div>
                                 <div className="text-center">
-                                    <img src="public/assets/p1.png" alt="WhatsApp QR" className="w-20 h-20 border border-gray-300 object-contain p-1" onError={(e) => e.target.style.display = 'none'} />
+                                    <img src="/assets/p1.png" alt="WhatsApp QR" className="w-20 h-20 border border-gray-300 object-contain p-1" onError={(e) => e.target.style.display = 'none'} />
                                     <p className="text-[10px] mt-1 font-bold">WhatsApp</p>
                                 </div>
                              </div>
@@ -915,7 +915,7 @@ const InvoiceGeneratorView = ({ setIsAuthenticated, isAuthenticated }) => {
                  </div>
                  <div className="text-right flex flex-col justify-end">
                     <div className="h-24 mb-2 flex items-end justify-end">
-                       <img src="public/assets/sign.png" alt="Authorized Signature" className="h-full w-auto object-contain" onError={(e) => e.target.style.display = 'none'} />
+                       <img src="/assets/sign.png" alt="Authorized Signature" className="h-full w-auto object-contain" onError={(e) => e.target.style.display = 'none'} />
                     </div>
                     <p className="text-xs font-bold uppercase tracking-widest">Authorized Signatory</p>
                     <p className="text-xs font-bold uppercase tracking-widest mt-1">Arun Ammisetty</p>
