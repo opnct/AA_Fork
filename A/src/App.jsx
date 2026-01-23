@@ -974,10 +974,10 @@ export default function App() {
              <p className="font-bold mb-4">{t.payment.desc}</p>
              <div className="flex flex-wrap justify-center gap-4 mb-6">
                 {[
-                  {name: 'PhonePe', src: 'public/ph.png'},
-                  {name: 'WhatsApp', src: 'public/wa.png'},
-                  {name: 'BHIM', src: 'public/bhim.jpeg'},
-                  {name: 'GPAY', src: 'public/gpay.png'}
+                  {name: 'PhonePe', src: 'assets/ph.png'},
+                  {name: 'WhatsApp', src: 'assets/wa.png'},
+                  {name: 'BHIM', src: 'assets/bhim.jpeg'},
+                  {name: 'GPAY', src: 'assets/gpay.png'}
                 ].map((pay) => (
                     <div key={pay.name} className="bg-white border-2 border-black p-2 shadow-sm w-32">
                         <img 
@@ -1003,12 +1003,12 @@ export default function App() {
               <div className="flex flex-wrap justify-center gap-4 mb-6">
                   <div className="bg-white border-2 border-black p-2 shadow-sm w-40">
                       <img 
-                          src="public/paypal.png" 
+                          src="assets/paypal.png" 
                           alt="PayPal QR Code"
                           className="w-full h-auto mb-2"
                           onError={(e) => {
                             e.target.onerror = null; 
-                            e.target.src=`public/ph.png`;
+                            e.target.src=`assets/ph.png`;
                           }}
                       />
                       <p className="text-xs font-bold">PayPal</p>
@@ -1423,9 +1423,9 @@ export default function App() {
                       918329004424@waicici
                     </div>
                     <div className="flex gap-2 mt-2">
-                       <img src="public/ph.png" alt="PhonePe" className="w-8 h-8 border border-black"/>
-                       <img src="public/wa.png" alt="WhatsApp" className="w-8 h-8 border border-black"/>
-                       <img src="public/bhim.jpeg" alt="UPI" className="w-8 h-8 border border-black"/>
+                       <img src="assets/ph.png" alt="PhonePe" className="w-8 h-8 border border-black"/>
+                       <img src="assets/wa.png" alt="WhatsApp" className="w-8 h-8 border border-black"/>
+                       <img src="assets/bhim.jpeg" alt="UPI" className="w-8 h-8 border border-black"/>
                     </div>
                   </>
                 )}
@@ -1440,7 +1440,7 @@ export default function App() {
                     <p className="opacity-75 text-[10px]">ARUN CHANDRASHEKHAR AMMISETTY</p>
                     <div className="mt-4">
                        <p className="font-bold text-xs uppercase opacity-75 mb-2">Or Pay via PayPal</p>
-                       <img src="public/paypal.png" alt="PayPal QR" className="w-20 h-20 border border-black" onError={(e) => { e.target.onerror = null; e.target.src=`public/paypal.png`; }}/>
+                       <img src="assets/paypal.png" alt="PayPal QR" className="w-20 h-20 border border-black" onError={(e) => { e.target.onerror = null; e.target.src=`assets/paypal.png`; }}/>
                     </div>
                   </div>
                 )}
@@ -1455,7 +1455,7 @@ export default function App() {
                     <p className="opacity-75 text-[10px]">ARUN CHANDRASHEKHAR AMMISETTY</p>
                     <div className="mt-4">
                        <p className="font-bold text-xs uppercase opacity-75 mb-2">Or Pay via PayPal</p>
-                       <img src="public/paypal.png" alt="PayPal QR" className="w-20 h-20 border border-black" onError={(e) => { e.target.onerror = null; e.target.src=`public/paypal.png`; }}/>
+                       <img src="assets/paypal.png" alt="PayPal QR" className="w-20 h-20 border border-black" onError={(e) => { e.target.onerror = null; e.target.src=`assets/paypal.png`; }}/>
                     </div>
                   </div>
                 )}
@@ -1470,7 +1470,7 @@ export default function App() {
                     <p><span className="font-bold">Beneficiary:</span> ﾍﾟｲｵﾆｱ ｼﾞﾔﾊﾟﾝ(ｶ</p>
                     <div className="mt-4">
                        <p className="font-bold text-xs uppercase opacity-75 mb-2">Or Pay via PayPal</p>
-                       <img src="public/paypal.png" alt="PayPal QR" className="w-20 h-20 border border-black" onError={(e) => { e.target.onerror = null; e.target.src=`public/paypal.png`; }}/>
+                       <img src="assets/paypal.png" alt="PayPal QR" className="w-20 h-20 border border-black" onError={(e) => { e.target.onerror = null; e.target.src=`assets/paypal.png`; }}/>
                     </div>
                   </div>
                 )}
@@ -1485,7 +1485,7 @@ export default function App() {
                     <p className="opacity-75 text-[10px]">ARUN CHANDRASHEKHAR AMMISETTY</p>
                     <div className="mt-4">
                        <p className="font-bold text-xs uppercase opacity-75 mb-2">Or Pay via PayPal</p>
-                       <img src="public/paypal.png" alt="PayPal QR" className="w-20 h-20 border border-black" onError={(e) => { e.target.onerror = null; e.target.src=`public/paypal.png`; }}/>
+                       <img src="assets/paypal.png" alt="PayPal QR" className="w-20 h-20 border border-black" onError={(e) => { e.target.onerror = null; e.target.src=`assets/paypal.png`; }}/>
                     </div>
                   </div>
                 )}
