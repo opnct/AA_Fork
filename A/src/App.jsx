@@ -3,7 +3,7 @@ import {
   Laptop, MapPin, X, ShieldCheck, Phone, User, ArrowRight,
   Clock, Zap, Mail, Download, Star, Moon, Sun,
   Database, PenTool, Code, Smartphone, Cpu, ExternalLink,
-  Linkedin, Globe, Facebook, Instagram, ShoppingBag, 
+  Linkedin, Globe, Github, Instagram, ShoppingBag, 
   FileText, Users, Coffee, CheckCircle, HelpCircle, QrCode, CreditCard,
   FileQuestion, AlertTriangle, Lock, ChevronDown
 } from 'lucide-react';
@@ -299,6 +299,7 @@ const translations = {
       { id: 1, category: "office", title: "डेटा एंट्री", role: "डेटा तज्ञ", desc: "Excel/Word मध्ये डेटा टाईप करणे. 100% अचूकतेची हमी.", rate: 199, unit: "प्रति तास" },
       { id: 2, category: "office", title: "टायपिंग काम", role: "कागदपत्रे", desc: "कायदेशीर किंवा कॉलेज कागदपत्रांसाठी इंग्रजी/हिंदी/मराठी टायपिंग.", rate: 20, unit: "प्रति पान" },
       { id: 3, category: "office", title: "PPT / Canva", role: "क्रिएटिव्ह डिझाइन", desc: "व्यावसायिक सादरीकरणे, पोस्टर आणि सोशल मीडिया बॅनर.", rate: 299, unit: "प्रति डिझाइन" },
+      { id: 4, category: "office", title: "आभासी सहाय्यक", role: "जागतिक", desc: "आंतरराष्ट्रीय ग्राहकांसाठी ईमेल व्यवस्थापन, वेळापत्रक आणि संशोधन.", rate: 999, unit: "प्रति तास" },
       { id: 201, category: "daily", title: "फॉर्म भरणे", role: "मदत", desc: "ऑनलाइन सरकारी फॉर्म, परीक्षा नोंदणी किंवा केवायसी अपडेटमध्ये मदत.", rate: 49, unit: "प्रति फॉर्म" },
       { id: 202, category: "daily", title: "स्थानिक कामे", role: "लोकल हेल्प", desc: "किराणा खरेदी, बँक चेक जमा करणे किंवा बानेरमध्ये कुरिअर पिकअप/डिलिव्हरी.", rate: 99, unit: "प्रति ट्रिप" },
       { id: 203, category: "daily", title: "रांग व्यवस्थापक", role: "लोकल हेल्प", desc: "तिकीट, प्रवेश किंवा सरकारी कार्यालयांसाठी रांगेत उभे राहणे.", rate: 149, unit: "प्रति तास" }
@@ -308,7 +309,8 @@ const translations = {
       cat_tech: "तंत्रज्ञान आणि आयटी",
       cat_office: "ऑफिस आणि डेटा",
       cat_daily: "दैनंदिन कामे",
-      tech_stack: "टेक आणि नॉन-टेक तज्ञ"
+      tech_stack: "टेक आणि नॉन-टेक तज्ञ",
+      intl_toggle: "आंतरराष्ट्रीय दर दर्शवा"
     },
     contact: {
       title: "संपर्क माहिती",
@@ -397,9 +399,11 @@ const translations = {
       { id: 101, category: "tech", title: "వెబ్ డెవలప్‌మెంట్", role: "IT సేవలు", desc: "సింగిల్ పేజీ వెబ్‌సైట్లు, ల్యాండింగ్ పేజీలు లేదా పోర్ట్‌ఫోలియోలు. అల్ట్రా ఫాస్ట్ & మొబైల్ ఫ్రెండ్లీ.", rate: 1999, unit: "ప్రారంభ ధర" },
       { id: 102, category: "tech", title: "యాప్ డిజైన్", role: "IT సేవలు", desc: "Android లేదా iOS యాప్‌ల కోసం క్లీన్ UI/UX డిజైన్ (Figma/Images).", rate: 2499, unit: "ప్రారంభ ధర" },
       { id: 103, category: "tech", title: "IT మద్దతు", role: "టెక్ సేవలు", desc: "PC/ల్యాప్‌టాప్ నెమ్మదిగా ఉంటే సరిచేయడం, సాఫ్ట్‌వేర్ ఇన్‌స్టాలేషన్, వైరస్ తొలగింపు.", rate: 199, unit: "సందర్శనకు" },
+      { id: 104, category: "tech", title: "రిమోట్ IT", role: "అంతర్జాతీయ", desc: "ప్రపంచ ఖాతాదారులకు రిమోట్ డెస్క్‌టాప్ మద్దతు. వైరస్ తొలగింపు & సెటప్.", rate: 1499, unit: "గంటకు" },
       { id: 1, category: "office", title: "డేటా ఎంట్రీ", role: "డేటా స్పెషలిస్ట్", desc: "Excel/Wordలో డేటాను టైప్ చేయడం. 100% ఖచ్చితత్వం.", rate: 199, unit: "గంటకు" },
       { id: 2, category: "office", title: "టైపింగ్ పని", role: "డాక్యుమెంట్ పని", desc: "లీగల్ లేదా కాలేజీ డాక్యుమెంట్ల కోసం ఇంగ్లీష్/హిందీ/మరాఠీ టైపింగ్.", rate: 20, unit: "పేజీకి" },
       { id: 3, category: "office", title: "PPT / Canva", role: "డిజైన్", desc: "ప్రొఫెషనల్ ప్రెజెంటేషన్లు, పోస్టర్లు మరియు సోషల్ మీడియా బ్యానర్లు.", rate: 299, unit: "డిజైన్‌కు" },
+      { id: 4, category: "office", title: "వర్చువల్ అసిస్టెంట్", role: "గ్లోబల్", desc: "అంతర్జాతీయ ఖాతాదారుల కోసం ఇమెయిల్ నిర్వహణ, షెడ్యూలింగ్ మరియు పరిశోధన.", rate: 999, unit: "గంటకు" },
       { id: 201, category: "daily", title: "ఫారమ్ నింపడం", role: "అడ్మిన్ సహాయం", desc: "ఆన్‌లైన్ ప్రభుత్వ ఫారమ్‌లు, పరీక్ష రిజిస్ట్రేషన్‌లు లేదా KYC అప్‌డేట్‌లు.", rate: 49, unit: "ఫారమ్‌కు" },
       { id: 202, category: "daily", title: "స్థానిక పనులు", role: "లోకల్ హెల్ప్", desc: "కిరాణా షాపింగ్, బ్యాంక్ చెక్ డ్రాప్, లేదా బానేర్‌లో కొరియర్ పికప్/డెలివరీ.", rate: 99, unit: "ట్రిప్‌కు" },
       { id: 203, category: "daily", title: "క్యూ మేనేజర్", role: "లోకల్ హెల్ప్", desc: "టిక్కెట్లు, అడ్మిషన్లు లేదా ప్రభుత్వ కార్యాలయాల కోసం క్యూలో నిలబడటం.", rate: 149, unit: "గంటకు" }
@@ -409,7 +413,8 @@ const translations = {
       cat_tech: "టెక్నాలజీ & IT",
       cat_office: "ఆఫీస్ & డేటా",
       cat_daily: "రోజువారీ పనులు",
-      tech_stack: "టెక్ & నాన్-టెక్ నిపుణుడు"
+      tech_stack: "టెక్ & నాన్-టెక్ నిపుణుడు",
+      intl_toggle: "అంతర్జాతీయ ధరలను చూపించు"
     },
     contact: {
       title: "సంప్రదింపు వివరాలు",
@@ -444,6 +449,214 @@ const translations = {
       copyright: "© 2026 అరుణ్ అమ్మిశెట్టి. సర్వ హక్కులు ప్రత్యేకించబడ్డాయి. పూణే, మహారాష్ట్ర, భారతదేశంలో నమోదు చేయబడింది. 2020 నుండి ISO ప్రామాణిక ప్రొఫెషనల్ సేవలను అందిస్తోంది."
     },
     common: { startingAt: "ప్రారంభ ధర", perHour: "గంటకు" }
+  },
+  ja: {
+    nav: { home: "ホーム", about: "概要", services: "サービス", pricing: "料金", ethics: "倫理", contact: "お問い合わせ" },
+    hero: {
+      badge: "雇用可能",
+      title: "手頃な価格のサービス。",
+      subtitle: "Arun Ammisettyによる技術および非技術ソリューション。",
+      desc: "プネでの高品質なITサポート、データ入力、および地域用務を市場競争力のある価格で提供します。",
+      ctaPrimary: "私を雇う",
+      ctaSecondary: "料金を見る",
+      stats: ["最低料金", "迅速なサービス", "信頼できる"]
+    },
+    about: {
+      title: "私について",
+      desc: "私はArun Ammisetty、プネのバネルを拠点とするフリーランサーです。私の使命は、個人や中小企業にアクセスしやすく、手頃な価格で、誠実なサービスを提供することです。ウェブサイト、文書入力、または地域の用務が必要な場合でも、私がサポートします。"
+    },
+    ethics: {
+      title: "私の倫理と約束",
+      noHidden: "隠れた費用なし",
+      noHiddenDesc: "提示された価格は標準作業の最終価格です。登録料や保証金は一切ありません。",
+      privacy: "100% プライバシー",
+      privacyDesc: "データ、文書、個人情報は第三者と共有されません。",
+      quality: "品質保証",
+      qualityDesc: "作業が合意された基準を満たすまで止めません。修正も含まれます。",
+      speed: "納期厳守",
+      speedDesc: "あなたの時間を尊重します。締め切りは真剣に守ります。"
+    },
+    payment: {
+      title: "支払い方法",
+      desc: "安全な支払いゲートウェイ",
+      upi: "UPI ID:",
+      copy: "コピー",
+      selectCountry: "支払詳細の国を選択",
+      payToggle: { india: "インド (UPI)", intl: "国際 (銀行)" }
+    },
+    legal: {
+      title: "法的およびポリシー",
+      privacy: "プライバシーポリシー",
+      terms: "利用規約",
+      refund: "返金ポリシー",
+      cookie: "クッキーポリシー",
+      disclaimer: "免責事項",
+      cancellation: "キャンセルポリシー",
+      privacyContent: "2026年発効。私たちはあなたのプライバシーを厳守します。収集されたすべての個人データ（名前、電話番号、文書）は、サービス提供のためにのみ使用されます。データを販売または共有することはありません。データは品質チェックのためにサービス後7日間保持され、その後完全に削除されます。すべてのデジタル転送には安全な暗号化が使用されます。",
+      termsContent: "Arun Ammisettyを雇うことにより、以下に同意したことになります：1. 支払いはタスク完了時または合意されたマイルストーンに従って行われます。2. サービスはユーザーの要件に基づいて「現状有姿」で提供されます。3. 違法または非倫理的な作業を拒否する権利を留保します。4. クライアントは遅延を避けるために明確な指示を提供する必要があります。",
+      refundContent: "合意から24時間以内にサービスが開始されなかった場合、全額返金されます。当方の過失により作業が不完全な場合は、一部返金が検討される場合があります。完了し承認された作業、または第三者の費用（ドメイン登録、印刷費など）については返金されません。",
+      cookieContent: "テーマの好み（ダーク/ライト）と言語選択を記憶するために、必須のローカルストレージクッキーのみを使用します。このポートフォリオウェブサイトでは、サードパーティの追跡、広告、または分析クッキーは使用されません。",
+      disclaimerContent: "Arun Ammisettyはフリーランスのサービスプロバイダーとして機能します。100%の正確性を確保するためにあらゆる努力が払われていますが、当社のサービスの使用から生じる偶発的または結果的な損害については責任を負いません。クライアントは、公式に使用する前にすべてのデータ入力または入力された文書を確認することをお勧めします。",
+      cancellationContent: "作業開始前に連絡があった場合、ペナルティなしでキャンセルを受け付けます。作業がすでに開始されている場合、時間とリソースをカバーするために、完了した作業に比例したキャンセル料（見積もりの50%まで）が適用される場合があります。"
+    },
+    servicesData: [
+      { id: 101, category: "tech", title: "ウェブ開発", role: "ITサービス", desc: "シングルページウェブサイト、ランディングページ、またはポートフォリオ。超高速＆モバイルフレンドリー。", rate: 1999, unit: "開始価格" },
+      { id: 102, category: "tech", title: "アプリ設計", role: "ITサービス", desc: "AndroidまたはiOSアプリ向けのクリーンなUI/UXデザイン（Figma/画像）。", rate: 2499, unit: "開始価格" },
+      { id: 103, category: "tech", title: "ITサポート", role: "技術サポート", desc: "PC/ラップトップの速度低下修正、ソフトウェアインストール、ウイルス駆除。", rate: 199, unit: "訪問ごと" },
+      { id: 104, category: "tech", title: "リモートIT", role: "国際サポート", desc: "グローバルクライアント向けのリモートデスクトップサポート。ウイルス駆除＆セットアップ。", rate: 1499, unit: "時間ごと" },
+      { id: 1, category: "office", title: "データ入力", role: "データスペシャリスト", desc: "Excel/Wordへのデータ入力。100%の精度保証。", rate: 199, unit: "時間ごと" },
+      { id: 2, category: "office", title: "タイピング作業", role: "文書管理", desc: "法的または大学の文書向けの英語/ヒンディー語/マラーティー語タイピング。", rate: 20, unit: "ページごと" },
+      { id: 3, category: "office", title: "PPT / Canva", role: "クリエイティブデザイン", desc: "プロフェッショナルなプレゼンテーション、ポスター、ソーシャルメディアバナー。", rate: 299, unit: "デザインごと" },
+      { id: 4, category: "office", title: "バーチャルアシスタント", role: "グローバル管理", desc: "国際クライアント向けのメール管理、スケジュール調整、リサーチ。", rate: 999, unit: "時間ごと" },
+      { id: 201, category: "daily", title: "フォーム記入", role: "管理ヘルプ", desc: "オンライン政府フォーム、試験登録、またはKYC更新支援。", rate: 49, unit: "フォームごと" },
+      { id: 202, category: "daily", title: "用務代行", role: "地域ヘルプ", desc: "バネルでの食料品買い物、銀行小切手預け入れ、または宅配便の受け取り/配達。", rate: 99, unit: "トリップごと" },
+      { id: 203, category: "daily", title: "行列管理", role: "地域ヘルプ", desc: "チケット、入場、または官公庁のための行列待ち。", rate: 149, unit: "時間ごと" }
+    ],
+    services: {
+      title: "サービスカタログ",
+      cat_tech: "技術 & IT",
+      cat_office: "オフィス & データ",
+      cat_daily: "日常業務 & 用務",
+      tech_stack: "技術 & 非技術エキスパート",
+      intl_toggle: "国際料金を表示"
+    },
+    contact: {
+      title: "連絡先情報",
+      formTitle: "WhatsAppお問い合わせ",
+      name: "お名前",
+      serviceLabel: "必要なサービスを選択",
+      servicePlaceholder: "サービスを選択...",
+      msg: "メッセージ",
+      send: "WhatsAppで送信",
+      addressTitle: "訪問する",
+      address: "バネル、プネ、マハラシュトラ、411045",
+      mapLabel: "地図で場所を確認"
+    },
+    footer: {
+      col1: "会社",
+      col2: "サービス",
+      col3: "法的",
+      col4: "接続",
+      col5: "支払い",
+      col6: "リソース",
+      links: {
+        about: "私について",
+        ethics: "私の倫理",
+        tech: "ITサービス",
+        office: "データ作業",
+        daily: "地域用務",
+        privacy: "プライバシーポリシー",
+        terms: "利用規約",
+        refund: "返金ポリシー"
+      },
+      parentTitle: "親ウェブサイト",
+      copyright: "© 2026 Arun Ammisetty. 全著作権所有。インド、マハラシュトラ州プネで登録。2020年以来、ISO標準のプロフェッショナルサービスを提供しています。"
+    },
+    common: { startingAt: "開始価格", perHour: "時間ごと" }
+  },
+  ar: {
+    nav: { home: "الرئيسية", about: "عني", services: "الخدمات", pricing: "الأسعار", ethics: "الأخلاقيات", contact: "اتصل" },
+    hero: {
+      badge: "متاح للتوظيف",
+      title: "خدمات بأسعار معقولة.",
+      subtitle: "حلول تقنية وغير تقنية بواسطة Arun Ammisetty.",
+      desc: "تقديم دعم تكنولوجيا المعلومات عالي الجودة، وإدخال البيانات، والمهمات المحلية في بيون بأسعار تنافسية.",
+      ctaPrimary: "وظفني",
+      ctaSecondary: "عرض الأسعار",
+      stats: ["أقل الأسعار", "خدمة سريعة", "جدير بالثقة"]
+    },
+    about: {
+      title: "عني",
+      desc: "أنا أرون أميسيتي، مستقل مقيم في بانير، بيون. مهمتي هي تقديم خدمات يسهل الوصول إليها وبأسعار معقولة وصادقة للأفراد والشركات الصغيرة. سواء كنت بحاجة إلى موقع ويب، أو مستند مكتوب، أو شخص ما لتشغيل المهمات المحلية، فأنا هنا للمساعدة."
+    },
+    ethics: {
+      title: "أخلاقياتي ووعودي",
+      noHidden: "لا رسوم خفية",
+      noHiddenDesc: "الأسعار المذكورة نهائية للعمل القياسي. لا توجد رسوم تسجيل أو ودائع تأمين على الإطلاق.",
+      privacy: "100% خصوصية",
+      privacyDesc: "لا يتم مشاركة بياناتك ومستنداتك وتفاصيلك الشخصية مع أطراف ثالثة.",
+      quality: "ضمان الجودة",
+      qualityDesc: "أنا لا أتوقف حتى يفي العمل بالمعايير المتفق عليها. المراجعات مشمولة.",
+      speed: "التسليم في الوقت المحدد",
+      speedDesc: "أنا أحترم وقتك. تؤخذ المواعيد النهائية على محمل الجد."
+    },
+    payment: {
+      title: "طرق الدفع",
+      desc: "بوابات الدفع الآمنة",
+      upi: "معرف UPI:",
+      copy: "نسخ",
+      selectCountry: "اختر الدولة لتفاصيل الدفع",
+      payToggle: { india: "الهند (UPI)", intl: "دولي (بنك)" }
+    },
+    legal: {
+      title: "قانوني وسياسات",
+      privacy: "سياسة الخصوصية",
+      terms: "شروط الخدمة",
+      refund: "سياسة الاسترداد",
+      cookie: "سياسة ملفات تعريف الارتباط",
+      disclaimer: "إخلاء المسؤولية",
+      cancellation: "سياسة الإلغاء",
+      privacyContent: "تاريخ السريان: 2026. نحن نقدر خصوصيتك بصرامة. يتم استخدام جميع البيانات الشخصية التي يتم جمعها (الاسم، الهاتف، المستندات) حصريًا لتقديم الخدمة. نحن لا نبيع أو نشارك البيانات. يتم الاحتفاظ بالبيانات لمدة 7 أيام بعد الخدمة لفحص الجودة ثم يتم حذفها نهائيًا. يتم استخدام التشفير الآمن لجميع التحويلات الرقمية.",
+      termsContent: "من خلال توظيف Arun Ammisetty، فإنك توافق على ما يلي: 1. الدفع مستحق عند إتمام المهمة أو وفقًا للمعالم المتفق عليها. 2. يتم تقديم الخدمات 'كما هي' بناءً على متطلبات المستخدم. 3. نحتفظ بالحق في رفض العمل غير القانوني أو غير الأخلاقي. 4. يجب على العميل تقديم تعليمات واضحة لتجنب التأخير.",
+      refundContent: "يتم إصدار المبالغ المستردة بالكامل إذا لم تبدأ الخدمة في غضون 24 ساعة من الاتفاق. قد يتم النظر في المبالغ المستردة الجزئية إذا كان العمل غير مكتمل بسبب خطأ من جانبنا. لا يتم تقديم مبالغ مستردة للعمل المكتمل والمعتمد، أو لتكاليف الطرف الثالث (مثل تسجيل النطاق، تكاليف الطباعة).",
+      cookieContent: "نحن نستخدم ملفات تعريف الارتباط للتخزين المحلي الأساسية فقط لتذكر تفضيل السمة (الداكن/الفاتح) واختيار اللغة. لا يتم استخدام ملفات تعريف ارتباط للتتبع أو الإعلان أو التحليلات التابعة لجهات خارجية على موقع المحفظة هذا.",
+      disclaimerContent: "يعمل Arun Ammisetty كمقدم خدمة مستقل. بينما يتم بذل كل جهد لضمان دقة بنسبة 100%، فإننا لسنا مسؤولين عن الأضرار العرضية أو التبعية الناتجة عن استخدام خدماتنا. يُنصح العملاء بالتحقق من جميع إدخال البيانات أو المستندات المكتوبة قبل الاستخدام الرسمي.",
+      cancellationContent: "يتم قبول الإلغاء بدون عقوبة إذا تم التواصل قبل بدء العمل. إذا بدأ العمل بالفعل، فقد يتم تطبيق رسوم إلغاء تتناسب مع العمل المنجز (تصل إلى 50% من الاقتباس) لتغطية الوقت والموارد المستخدمة."
+    },
+    servicesData: [
+      { id: 101, category: "tech", title: "تطوير الويب", role: "خدمات IT", desc: "مواقع ويب من صفحة واحدة، صفحات هبوط، أو محافظ. سريعة للغاية وصديقة للجوال.", rate: 1999, unit: "يبدأ من" },
+      { id: 102, category: "tech", title: "تصميم التطبيقات", role: "خدمات IT", desc: "تصميم UI/UX نظيف لتطبيقات Android أو iOS (Figma/Images).", rate: 2499, unit: "يبدأ من" },
+      { id: 103, category: "tech", title: "دعم IT", role: "دعم فني", desc: "إصلاح بطء الكمبيوتر/الكمبيوتر المحمول، تثبيت البرامج، تنظيف الفيروسات.", rate: 199, unit: "لكل زيارة" },
+      { id: 104, category: "tech", title: "IT عن بعد", role: "دعم دولي", desc: "دعم سطح المكتب عن بعد للعملاء العالميين. إزالة الفيروسات والإعداد.", rate: 1499, unit: "في الساعة" },
+      { id: 1, category: "office", title: "إدخال البيانات", role: "أخصائي بيانات", desc: "كتابة البيانات في Excel/Word. دقة 100% مضمونة.", rate: 199, unit: "في الساعة" },
+      { id: 2, category: "office", title: "أعمال الكتابة", role: "مراقبة المستندات", desc: "كتابة باللغة الإنجليزية/الهندية/الماراثية للمستندات القانونية أو الجامعية.", rate: 20, unit: "لكل صفحة" },
+      { id: 3, category: "office", title: "PPT / Canva", role: "تصميم إبداعي", desc: "عروض تقديمية احترافية، ملصقات، ولافتات وسائل التواصل الاجتماعي.", rate: 299, unit: "لكل تصميم" },
+      { id: 4, category: "office", title: "مساعد افتراضي", role: "مشرف عالمي", desc: "إدارة البريد الإلكتروني، والجدولة، والبحث للعملاء الدوليين.", rate: 999, unit: "في الساعة" },
+      { id: 201, category: "daily", title: "ملء النماذج", role: "مساعدة إدارية", desc: "نماذج حكومية عبر الإنترنت، تسجيل الامتحانات، أو تحديثات KYC.", rate: 49, unit: "لكل نموذج" },
+      { id: 202, category: "daily", title: "توصيل الطلبات", role: "مساعدة محلية", desc: "تسوق البقالة، إيداع الشيكات المصرفية، أو استلام/تسليم البريد السريع في بانير.", rate: 99, unit: "لكل رحلة" },
+      { id: 203, category: "daily", title: "مدير الطابور", role: "مساعدة محلية", desc: "الوقوف في طوابير للتذاكر، القبول، أو المكاتب الحكومية.", rate: 149, unit: "في الساعة" }
+    ],
+    services: {
+      title: "كتالوج الخدمات",
+      cat_tech: "التكنولوجيا & IT",
+      cat_office: "مكتب & بيانات",
+      cat_daily: "المهام اليومية & المهمات",
+      tech_stack: "خبير تقني وغير تقني",
+      intl_toggle: "عرض الأسعار الدولية"
+    },
+    contact: {
+      title: "معلومات الاتصال",
+      formTitle: "استفسار WhatsApp",
+      name: "اسمك",
+      serviceLabel: "اختر الخدمة المطلوبة",
+      servicePlaceholder: "اختر خدمة...",
+      msg: "رسالة",
+      send: "إرسال عبر WhatsApp",
+      addressTitle: "زرني",
+      address: "بانير، بيون، ماهاراشترا، 411045",
+      mapLabel: "تحديد الموقع على الخريطة"
+    },
+    footer: {
+      col1: "شركة",
+      col2: "خدمات",
+      col3: "قانوني",
+      col4: "تواصل",
+      col5: "مدفوعات",
+      col6: "موارد",
+      links: {
+        about: "عني",
+        ethics: "أخلاقياتي",
+        tech: "خدمات IT",
+        office: "عمل البيانات",
+        daily: "مهمات محلية",
+        privacy: "سياسة الخصوصية",
+        terms: "شروط الخدمة",
+        refund: "سياسة الاسترداد"
+      },
+      parentTitle: "الموقع الرئيسي",
+      copyright: "© 2026 Arun Ammisetty. جميع الحقوق محفوظة. مسجل في بيون، ماهاراشترا، الهند. تقديم خدمات احترافية بمعيار ISO منذ عام 2020."
+    },
+    common: { startingAt: "يبدأ من", perHour: "في الساعة" }
   }
 };
 
@@ -498,13 +711,19 @@ export default function App() {
 
   const t = translations[lang];
 
-  const cycleLang = () => {
-    const order = ['en', 'hi', 'mr', 'te'];
-    const nextIndex = (order.indexOf(lang) + 1) % order.length;
-    setLang(order[nextIndex]);
+  const cycleLang = (e) => {
+    setLang(e.target.value);
   };
 
-  const LangLabel = { en: "English", hi: "हिंदी", mr: "मराठी", te: "తెలుగు" };
+  const LangOptions = [
+    { code: 'en', label: 'English' },
+    { code: 'hi', label: 'हिंदी' },
+    { code: 'mr', label: 'मराठी' },
+    { code: 'te', label: 'తెలుగు' },
+    { code: 'ja', label: '日本語' },
+    { code: 'ar', label: 'العربية' }
+  ];
+
   const toggleDark = () => setDarkMode(!darkMode);
   
   const navigate = (page) => {
@@ -537,10 +756,13 @@ export default function App() {
     return `${symbol}${converted}`;
   };
 
+  // RTL Check
+  const isRTL = lang === 'ar';
+
   // --- PAGES ---
 
   const HomePage = () => (
-    <div className="flex flex-col items-center justify-center min-h-[80vh] text-center px-4 animate-in fade-in zoom-in duration-300">
+    <div className={`flex flex-col items-center justify-center min-h-[80vh] text-center px-4 animate-in fade-in zoom-in duration-300 ${isRTL ? 'rtl' : ''}`}>
       <div className={`
         inline-block px-4 py-2 border-2 border-black font-black mb-6 transform -rotate-2
         ${darkMode ? 'bg-blue-600 text-white' : 'bg-black text-white'}
@@ -590,7 +812,7 @@ export default function App() {
   );
 
   const AboutPage = () => (
-    <div className="py-12 px-4 max-w-4xl mx-auto animate-in zoom-in duration-300">
+    <div className={`py-12 px-4 max-w-4xl mx-auto animate-in zoom-in duration-300 ${isRTL ? 'rtl' : ''}`}>
       <NeubrutalCard color="bg-white">
         <h2 className="text-4xl font-black mb-6 uppercase border-b-4 border-black pb-2 inline-block">
           {t.about.title}
@@ -615,7 +837,7 @@ export default function App() {
   );
 
   const ServicesPage = () => (
-    <div className="py-12 px-4 max-w-7xl mx-auto animate-in slide-in-from-right duration-300">
+    <div className={`py-12 px-4 max-w-7xl mx-auto animate-in slide-in-from-right duration-300 ${isRTL ? 'rtl' : ''}`}>
       <div className="flex flex-col md:flex-row justify-between items-end mb-12 border-b-8 border-black pb-4">
         <h2 className={`text-5xl font-black ${darkMode ? 'text-white' : 'text-black'}`}>
           {t.services.title}
@@ -699,7 +921,7 @@ export default function App() {
   };
 
   const PricingPage = () => (
-    <div className="py-12 px-4 max-w-5xl mx-auto animate-in slide-in-from-bottom duration-300">
+    <div className={`py-12 px-4 max-w-5xl mx-auto animate-in slide-in-from-bottom duration-300 ${isRTL ? 'rtl' : ''}`}>
       <div className="flex flex-col items-center mb-12">
         <h2 className={`text-5xl font-black mb-4 text-center ${darkMode ? 'text-white' : 'text-black'}`}>
           {t.nav.pricing}
@@ -755,7 +977,7 @@ export default function App() {
                   {name: 'PhonePe', src: 'public/ph.png'},
                   {name: 'WhatsApp', src: 'public/wa.png'},
                   {name: 'BHIM', src: 'public/bhim.jpeg'},
-                  {name: 'GPAY', src: 'public/intl.png'}
+                  {name: 'GPAY', src: 'public/gpay.png'}
                 ].map((pay) => (
                     <div key={pay.name} className="bg-white border-2 border-black p-2 shadow-sm w-32">
                         <img 
@@ -778,9 +1000,7 @@ export default function App() {
          ) : (
            <>
               <p className="font-bold mb-4">International Payment Methods</p>
-              
-              {/* PayPal QR Code */}
-              <div className="flex justify-center mb-6">
+              <div className="flex flex-wrap justify-center gap-4 mb-6">
                   <div className="bg-white border-2 border-black p-2 shadow-sm w-40">
                       <img 
                           src="public/paypal.png" 
@@ -788,14 +1008,14 @@ export default function App() {
                           className="w-full h-auto mb-2"
                           onError={(e) => {
                             e.target.onerror = null; 
-                            e.target.src=`public/paypal.png`;
+                            e.target.src=`public/ph.png`;
                           }}
                       />
                       <p className="text-xs font-bold">PayPal</p>
                   </div>
               </div>
 
-              <div className="text-left bg-white border-2 border-black p-4 mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] max-w-2xl mx-auto space-y-6">
+              <div className={`text-left bg-white border-2 border-black p-4 mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] max-w-2xl mx-auto space-y-6 ${isRTL ? 'text-right' : ''}`}>
                 
                 {/* UAE */}
                 <div className="border-b-2 border-gray-200 pb-4">
@@ -838,6 +1058,9 @@ export default function App() {
                   <p className="text-sm"><span className="font-bold">Beneficiary:</span> Arun Ammisetty</p>
                 </div>
               </div>
+              <div className="inline-block bg-white border-2 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-left text-sm">
+                <p className="font-bold">Use the details above for direct bank transfers.</p>
+             </div>
            </>
          )}
       </NeubrutalCard>
@@ -875,7 +1098,7 @@ export default function App() {
   );
 
   const EthicsPage = () => (
-    <div className="py-12 px-4 max-w-4xl mx-auto animate-in zoom-in duration-300">
+    <div className={`py-12 px-4 max-w-4xl mx-auto animate-in zoom-in duration-300 ${isRTL ? 'rtl' : ''}`}>
       <NeubrutalCard color="bg-white" className="!p-0 overflow-hidden">
         <div className="bg-black text-white p-8 border-b-4 border-black">
           <h2 className="text-4xl font-black uppercase tracking-tighter">{t.ethics.title}</h2>
@@ -935,7 +1158,7 @@ export default function App() {
   );
 
   const LegalPage = () => (
-    <div className="py-12 px-4 max-w-4xl mx-auto animate-in zoom-in duration-300">
+    <div className={`py-12 px-4 max-w-4xl mx-auto animate-in zoom-in duration-300 ${isRTL ? 'rtl' : ''}`}>
       <NeubrutalCard color="bg-white">
         <div className="border-b-4 border-black pb-4 mb-6">
            <h2 className="text-3xl font-black uppercase">{t.legal[currentLegalDoc]}</h2>
@@ -957,7 +1180,7 @@ export default function App() {
   );
 
   const ContactPage = () => (
-    <div className="py-12 px-4 max-w-6xl mx-auto animate-in fade-in duration-500">
+    <div className={`py-12 px-4 max-w-6xl mx-auto animate-in fade-in duration-500 ${isRTL ? 'rtl' : ''}`}>
       <div className="grid md:grid-cols-2 gap-12">
         
         {/* CONTACT FORM */}
@@ -1049,14 +1272,14 @@ export default function App() {
   // --- LAYOUT ---
 
   return (
-    <div className={`min-h-screen font-sans transition-colors duration-300 ${darkMode ? 'bg-black' : 'bg-gray-50'}`}>
+    <div className={`min-h-screen font-sans transition-colors duration-300 ${darkMode ? 'bg-black' : 'bg-gray-50'} ${isRTL ? 'text-right' : 'text-left'}`}>
       
       {/* NAVBAR */}
       <nav className={`
         fixed top-0 left-0 w-full z-50 border-b-4 border-black
         ${darkMode ? 'bg-gray-900 border-b-white' : 'bg-white'}
       `}>
-        <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
+        <div className={`max-w-7xl mx-auto px-4 h-20 flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
           <div 
             onClick={() => navigate('home')}
             className={`
@@ -1067,7 +1290,7 @@ export default function App() {
             ARUN<span className="text-blue-500">.</span>A
           </div>
 
-          <div className="hidden md:flex items-center gap-8">
+          <div className={`hidden md:flex items-center gap-8 ${isRTL ? 'flex-row-reverse' : ''}`}>
             {['home', 'about', 'services', 'pricing', 'ethics', 'contact'].map(page => (
               <button
                 key={page}
@@ -1082,13 +1305,27 @@ export default function App() {
             ))}
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <button onClick={toggleDark} className={`p-2 border-2 border-black ${darkMode ? 'bg-white text-black' : 'bg-black text-white'}`}>
               {darkMode ? <Sun size={20} /> : <Moon size={20} />}
             </button>
-            <button onClick={cycleLang} className="px-3 py-2 border-2 border-black font-bold bg-white text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-[2px] active:translate-x-[2px]">
-              {LangLabel[lang]}
-            </button>
+            
+            {/* Language Dropdown */}
+            <div className="relative inline-block">
+              <select 
+                value={lang} 
+                onChange={cycleLang}
+                className="appearance-none bg-white border-2 border-black font-bold text-black px-4 py-2 pr-8 focus:outline-none focus:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+              >
+                {LangOptions.map(option => (
+                  <option key={option.code} value={option.code}>{option.label}</option>
+                ))}
+              </select>
+              <div className={`pointer-events-none absolute inset-y-0 flex items-center px-2 text-black ${isRTL ? 'left-0' : 'right-0'}`}>
+                <ChevronDown size={16} />
+              </div>
+            </div>
+
             <button className="md:hidden p-2" onClick={() => setMenuOpen(!menuOpen)}>
               {menuOpen ? <X size={32} className={darkMode ? 'text-white' : 'text-black'} /> : <div className={darkMode ? 'text-white' : 'text-black'}><TwoLineMenu /></div>}
             </button>
@@ -1126,7 +1363,7 @@ export default function App() {
         border-t-4 border-black py-12 px-4
         ${darkMode ? 'bg-black text-white border-t-white' : 'bg-white text-black'}
       `}>
-        <div className="max-w-7xl mx-auto grid md:grid-cols-6 gap-8 mb-8 text-left">
+        <div className={`max-w-7xl mx-auto grid md:grid-cols-6 gap-8 mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
            {/* Col 1 */}
            <div className="col-span-2 md:col-span-1">
              <h3 className="font-black text-xl mb-4">ARUN.A</h3>
@@ -1137,9 +1374,9 @@ export default function App() {
            <div>
              <h3 className="font-bold mb-4 uppercase text-blue-600">{t.footer.col2}</h3>
              <div className="flex flex-col gap-2 text-sm font-medium">
-                <button onClick={() => navigate('services')} className="text-left hover:underline">{t.footer.links.tech}</button>
-                <button onClick={() => navigate('services')} className="text-left hover:underline">{t.footer.links.office}</button>
-                <button onClick={() => navigate('services')} className="text-left hover:underline">{t.footer.links.daily}</button>
+                <button onClick={() => navigate('services')} className={`hover:underline ${isRTL ? 'text-right' : 'text-left'}`}>{t.footer.links.tech}</button>
+                <button onClick={() => navigate('services')} className={`hover:underline ${isRTL ? 'text-right' : 'text-left'}`}>{t.footer.links.office}</button>
+                <button onClick={() => navigate('services')} className={`hover:underline ${isRTL ? 'text-right' : 'text-left'}`}>{t.footer.links.daily}</button>
              </div>
            </div>
 
@@ -1147,11 +1384,11 @@ export default function App() {
            <div>
              <h3 className="font-bold mb-4 uppercase text-blue-600">{t.footer.col3}</h3>
              <div className="flex flex-col gap-2 text-sm font-medium">
-                <button onClick={() => openLegal('privacy')} className="text-left hover:underline">{t.footer.links.privacy}</button>
-                <button onClick={() => openLegal('terms')} className="text-left hover:underline">{t.footer.links.terms}</button>
-                <button onClick={() => openLegal('refund')} className="text-left hover:underline">{t.footer.links.refund}</button>
-                <button onClick={() => openLegal('cookie')} className="text-left hover:underline">{t.legal.cookie}</button>
-                <button onClick={() => openLegal('cancellation')} className="text-left hover:underline">{t.legal.cancellation}</button>
+                <button onClick={() => openLegal('privacy')} className={`hover:underline ${isRTL ? 'text-right' : 'text-left'}`}>{t.footer.links.privacy}</button>
+                <button onClick={() => openLegal('terms')} className={`hover:underline ${isRTL ? 'text-right' : 'text-left'}`}>{t.footer.links.terms}</button>
+                <button onClick={() => openLegal('refund')} className={`hover:underline ${isRTL ? 'text-right' : 'text-left'}`}>{t.footer.links.refund}</button>
+                <button onClick={() => openLegal('cookie')} className={`hover:underline ${isRTL ? 'text-right' : 'text-left'}`}>{t.legal.cookie}</button>
+                <button onClick={() => openLegal('cancellation')} className={`hover:underline ${isRTL ? 'text-right' : 'text-left'}`}>{t.legal.cancellation}</button>
              </div>
            </div>
 
@@ -1174,7 +1411,7 @@ export default function App() {
                     <option value="Japan">Japan (Bank Transfer)</option>
                     <option value="Eurozone">Eurozone (Bank Transfer)</option>
                   </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                  <div className={`pointer-events-none absolute inset-y-0 flex items-center px-2 text-gray-700 ${isRTL ? 'left-0' : 'right-0'}`}>
                     <ChevronDown size={16} />
                   </div>
                 </div>
@@ -1186,93 +1423,69 @@ export default function App() {
                       918329004424@waicici
                     </div>
                     <div className="flex gap-2 mt-2">
-                       <img src="public/ph.png" alt="PhonePe" className="w-16 h-16 border border-black"/>
-                       <img src="public/wa.png" alt="WhatsApp" className="w-16 h-16 border border-black"/>
-                       <img src="public/bhim.jpeg" alt="UPI" className="w-16 h-16 border border-black"/>
+                       <img src="public/ph.png" alt="PhonePe" className="w-8 h-8 border border-black"/>
+                       <img src="public/wa.png" alt="WhatsApp" className="w-8 h-8 border border-black"/>
+                       <img src="public/bhim.jpeg" alt="UPI" className="w-8 h-8 border border-black"/>
                     </div>
                   </>
                 )}
                 
                 {selectedCountry === 'UAE' && (
-                  <div className="mt-2 text-xs border-l-2 border-black pl-2">
+                  <div className={`mt-2 text-xs border-black pl-2 ${isRTL ? 'border-r-2 pr-2' : 'border-l-2'}`}>
                     <p className="font-bold">Standard Chartered</p>
                     <p>Standard Chartered Tower, Emaar Square Dubai, UAE</p>
                     <p><span className="font-bold">SWIFT:</span> SCBLAEADXXX</p>
                     <p><span className="font-bold">IBAN:</span> AE550446420010001414704</p>
                     <p><span className="font-bold">Beneficiary:</span> Arun Ammisetty</p>
                     <p className="opacity-75 text-[10px]">ARUN CHANDRASHEKHAR AMMISETTY</p>
-                    
                     <div className="mt-4">
                        <p className="font-bold text-xs uppercase opacity-75 mb-2">Or Pay via PayPal</p>
-                       <img 
-                          src="public/paypal.png" 
-                          alt="PayPal QR" 
-                          className="w-20 h-20 border border-black"
-                          onError={(e) => { e.target.onerror = null; e.target.src=`public/paypal.png`; }}
-                       />
+                       <img src="public/paypal.png" alt="PayPal QR" className="w-20 h-20 border border-black" onError={(e) => { e.target.onerror = null; e.target.src=`public/paypal.png`; }}/>
                     </div>
                   </div>
                 )}
 
                 {selectedCountry === 'Australia' && (
-                  <div className="mt-2 text-xs border-l-2 border-black pl-2">
+                  <div className={`mt-2 text-xs border-black pl-2 ${isRTL ? 'border-r-2 pr-2' : 'border-l-2'}`}>
                     <p className="font-bold">Citibank</p>
                     <p>2 Park Street, Sydney NSW 2000</p>
                     <p><span className="font-bold">BSB:</span> 248024</p>
                     <p><span className="font-bold">Account:</span> 10516966</p>
                     <p><span className="font-bold">Beneficiary:</span> Arun Ammisetty</p>
                     <p className="opacity-75 text-[10px]">ARUN CHANDRASHEKHAR AMMISETTY</p>
-                    
                     <div className="mt-4">
                        <p className="font-bold text-xs uppercase opacity-75 mb-2">Or Pay via PayPal</p>
-                       <img 
-                          src="public/paypal.png" 
-                          alt="PayPal QR" 
-                          className="w-20 h-20 border border-black"
-                          onError={(e) => { e.target.onerror = null; e.target.src=`public/paypal.png`; }}
-                       />
+                       <img src="public/paypal.png" alt="PayPal QR" className="w-20 h-20 border border-black" onError={(e) => { e.target.onerror = null; e.target.src=`public/paypal.png`; }}/>
                     </div>
                   </div>
                 )}
 
                 {selectedCountry === 'Japan' && (
-                  <div className="mt-2 text-xs border-l-2 border-black pl-2">
+                  <div className={`mt-2 text-xs border-black pl-2 ${isRTL ? 'border-r-2 pr-2' : 'border-l-2'}`}>
                     <p className="font-bold">MUFG Bank, Ltd.</p>
                     <p>7-1 Marunouchi 2-Chome, Chiyoda-ku Tokyo, Japan</p>
                     <p><span className="font-bold">Bank Code:</span> 0005</p>
                     <p><span className="font-bold">Branch Code:</span> 869</p>
                     <p><span className="font-bold">Account:</span> 4674430 (Savings)</p>
                     <p><span className="font-bold">Beneficiary:</span> ﾍﾟｲｵﾆｱ ｼﾞﾔﾊﾟﾝ(ｶ</p>
-                    
                     <div className="mt-4">
                        <p className="font-bold text-xs uppercase opacity-75 mb-2">Or Pay via PayPal</p>
-                       <img 
-                          src="public/paypal.png" 
-                          alt="PayPal QR" 
-                          className="w-20 h-20 border border-black"
-                          onError={(e) => { e.target.onerror = null; e.target.src=`public/paypal.png`; }}
-                       />
+                       <img src="public/paypal.png" alt="PayPal QR" className="w-20 h-20 border border-black" onError={(e) => { e.target.onerror = null; e.target.src=`public/paypal.png`; }}/>
                     </div>
                   </div>
                 )}
                 
                 {selectedCountry === 'Eurozone' && (
-                  <div className="mt-2 text-xs border-l-2 border-black pl-2">
+                  <div className={`mt-2 text-xs border-black pl-2 ${isRTL ? 'border-r-2 pr-2' : 'border-l-2'}`}>
                     <p className="font-bold">Banking Circle S.A.</p>
                     <p>2, Boulevard de la Foire L-1528 LUXEMBOURG</p>
                     <p><span className="font-bold">IBAN:</span> LU744080000045726924</p>
                     <p><span className="font-bold">BIC:</span> BCIRLULL</p>
                     <p><span className="font-bold">Beneficiary:</span> Arun Ammisetty</p>
                     <p className="opacity-75 text-[10px]">ARUN CHANDRASHEKHAR AMMISETTY</p>
-                    
                     <div className="mt-4">
                        <p className="font-bold text-xs uppercase opacity-75 mb-2">Or Pay via PayPal</p>
-                       <img 
-                          src="public/paypal.png" 
-                          alt="PayPal QR" 
-                          className="w-20 h-20 border border-black"
-                          onError={(e) => { e.target.onerror = null; e.target.src=`public/paypal.png`; }}
-                       />
+                       <img src="public/paypal.png" alt="PayPal QR" className="w-20 h-20 border border-black" onError={(e) => { e.target.onerror = null; e.target.src=`public/paypal.png`; }}/>
                     </div>
                   </div>
                 )}
@@ -1283,8 +1496,8 @@ export default function App() {
            <div>
              <h3 className="font-bold mb-4 uppercase text-blue-600">{t.footer.col6}</h3>
              <div className="flex flex-col gap-2 text-sm font-medium">
-                <button onClick={() => navigate('about')} className="text-left hover:underline">{t.footer.links.about}</button>
-                <button onClick={() => navigate('ethics')} className="text-left hover:underline">{t.footer.links.ethics}</button>
+                <button onClick={() => navigate('about')} className={`hover:underline ${isRTL ? 'text-right' : 'text-left'}`}>{t.footer.links.about}</button>
+                <button onClick={() => navigate('ethics')} className={`hover:underline ${isRTL ? 'text-right' : 'text-left'}`}>{t.footer.links.ethics}</button>
              </div>
            </div>
 
@@ -1293,7 +1506,8 @@ export default function App() {
              <h3 className="font-bold mb-4 uppercase text-blue-600">{t.footer.col4}</h3>
              <div className="flex gap-4 mb-6">
                 <a href="https://go.ly/am" target="_blank" className={`p-2 border-2 border-black transition-all hover:bg-black hover:text-white ${darkMode ? 'border-white hover:bg-white hover:text-black' : ''}`}><Globe size={20} /></a>
-                <a href="#" className={`p-2 border-2 border-black transition-all hover:bg-black hover:text-white ${darkMode ? 'border-white hover:bg-white hover:text-black' : ''}`}><Linkedin size={20} /></a>
+                <a href="https://www.linkedin.com/in/arun-ammisetty" className={`p-2 border-2 border-black transition-all hover:bg-black hover:text-white ${darkMode ? 'border-white hover:bg-white hover:text-black' : ''}`}><Linkedin size={20} /></a>
+                <a href="https://github.com/aammisetty" className={`p-2 border-2 border-black transition-all hover:bg-black hover:text-white ${darkMode ? 'border-white hover:bg-white hover:text-black' : ''}`}><Github size={20} /></a>
              </div>
              
              <div className="border-2 border-black p-4 inline-block shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white text-black">
