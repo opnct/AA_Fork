@@ -63,10 +63,11 @@ const translations = {
     },
     payment: {
       title: "PAYMENT METHODS",
-      desc: "Scan to pay via PhonePe / WhatsApp Pay / BHIM / UPI",
+      desc: "Secure Payment Gateways",
       upi: "UPI ID:",
       copy: "Copy",
-      selectCountry: "Select Country for Payment Details"
+      selectCountry: "Select Country for Payment Details",
+      payToggle: { india: "India (UPI)", intl: "International (Bank)" }
     },
     legal: {
       title: "LEGAL & POLICIES",
@@ -166,10 +167,11 @@ const translations = {
     },
     payment: {
       title: "भुगतान के तरीके",
-      desc: "PhonePe / WhatsApp Pay / BHIM के जरिए स्कैन करें",
+      desc: "सुरक्षित भुगतान गेटवे",
       upi: "UPI आईडी:",
       copy: "कॉपी",
-      selectCountry: "भुगतान विवरण के लिए देश चुनें"
+      selectCountry: "भुगतान विवरण के लिए देश चुनें",
+      payToggle: { india: "भारत (UPI)", intl: "अंतर्राष्ट्रीय (बैंक)" }
     },
     legal: {
       title: "कानूनी और नीतियां",
@@ -269,10 +271,11 @@ const translations = {
     },
     payment: {
       title: "पेमेंट पद्धती",
-      desc: "PhonePe / WhatsApp Pay / BHIM द्वारे स्कॅन करा",
+      desc: "सुरक्षित पेमेंट गेटवे",
       upi: "UPI आयडी:",
       copy: "कॉपी",
-      selectCountry: "पेमेंट तपशीलांसाठी देश निवडा"
+      selectCountry: "पेमेंट तपशीलांसाठी देश निवडा",
+      payToggle: { india: "भारत (UPI)", intl: "आंतरराष्ट्रीय (बँक)" }
     },
     legal: {
       title: "कायदेशीर आणि धोरणे",
@@ -286,18 +289,16 @@ const translations = {
       termsContent: "अरुण अम्मीसेट्टी यांना कामावर घेऊन, तुम्ही खालील गोष्टींशी सहमत आहात: 1. काम पूर्ण झाल्यावर पेमेंट देय आहे. 2. सेवा 'जशा आहेत तशा' प्रदान केल्या जातात. 3. बेकायदेशीर कामांना नकार देण्याचा अधिकार आम्ही राखून ठेवतो. 4. विलंब टाळण्यासाठी ग्राहकाने स्पष्ट सूचना देणे आवश्यक आहे.",
       refundContent: "कराराच्या 24 तासांच्या आत सेवा सुरू न झाल्यास पूर्ण परतावा दिला जातो. आमच्या चुकीमुळे काम अपूर्ण असल्यास आंशिक परतावा विचारात घेतला जाऊ शकतो. पूर्ण झालेल्या आणि मंजूर केलेल्या कामासाठी परतावा नाही.",
       cookieContent: "तुमची थीम पसंती (गडद/प्रकाश) आणि भाषा निवड लक्षात ठेवण्यासाठी आम्ही केवळ आवश्यक स्थानिक कुकीज वापरतो. या पोर्टफोलिओ वेबसाइटवर कोणत्याही तृतीय-पक्ष ट्रॅकिंग किंवा जाहिरात कुकीज वापरल्या जात नाहीत.",
-      disclaimerContent: "अरुण अम्मीसेट्टी एक फ्रीलांस सेवा प्रदाता म्हणून काम करतात. 100% अचूकता सुनिश्चित करण्यासाठी सर्व प्रयत्न केले जात असताना, आमच्या सेवांच्या वापरामुळे उद्भवणाऱ्या कोणत्याही परिणामी नुकसानासाठी (उदा. तुम्ही प्रदान केलेल्या डेटा एंट्रीमध्ये त्रुटी) आम्ही जबाबदार नाही. अधिकृत वापरापूर्वी ग्राहकांनी सर्व कामाची पडताळणी करण्याचा सल्ला दिला जातो.",
+      disclaimerContent: "अरुण अम्मीसेट्टी एक फ्रीलांस सेवा प्रदाता म्हणून काम करतात. 100% अचूकता सुनिश्चित करण्यासाठी सर्व प्रयत्न केले जात असताना, आमच्या सेवांच्या वापरामुळे उद्भवणाऱ्या कोणत्याही आकस्मिक नुकसानीसाठी आम्ही जबाबदार नाही. अधिकृत वापरापूर्वी ग्राहकांनी सर्व कामाची पडताळणी करण्याचा सल्ला दिला जातो.",
       cancellationContent: "काम सुरू होण्यापूर्वी कळवल्यास शून्य दंडासह रद्दीकरण स्वीकारले जाते. जर काम आधीच सुरू झाले असेल, तर वापरलेला वेळ आणि संसाधने कव्हर करण्यासाठी कामाच्या प्रमाणात रद्दीकरण शुल्क लागू होऊ शकते."
     },
     servicesData: [
       { id: 101, category: "tech", title: "वेब डेव्हलपमेंट", role: "आयटी सेवा", desc: "सिंगल पेज वेबसाइट, लँडिंग पेज किंवा पोर्टफोलिओ. अल्ट्रा फास्ट आणि मोबाईल फ्रेंडली.", rate: 1999, unit: "सुरुवात" },
       { id: 102, category: "tech", title: "अॅप डिझाइन", role: "आयटी सेवा", desc: "Android किंवा iOS अॅप्ससाठी क्लीन UI/UX डिझाइन (Figma/Images).", rate: 2499, unit: "सुरुवात" },
       { id: 103, category: "tech", title: "आयटी सपोर्ट", role: "टेक सपोर्ट", desc: "पीसी/लॅपटॉपचा स्लो स्पीड ठीक करणे, सॉफ्टवेअर इन्स्टॉलेशन, व्हायरस काढणे.", rate: 199, unit: "प्रति व्हिजिट" },
-      { id: 104, category: "tech", title: "रिमोट आयटी", role: "आंतरराष्ट्रीय", desc: "जागतिक ग्राहकांसाठी रिमोट डेस्कटॉप समर्थन. व्हायरस काढणे आणि सेटअप.", rate: 1499, unit: "प्रति तास" },
       { id: 1, category: "office", title: "डेटा एंट्री", role: "डेटा तज्ञ", desc: "Excel/Word मध्ये डेटा टाईप करणे. 100% अचूकतेची हमी.", rate: 199, unit: "प्रति तास" },
       { id: 2, category: "office", title: "टायपिंग काम", role: "कागदपत्रे", desc: "कायदेशीर किंवा कॉलेज कागदपत्रांसाठी इंग्रजी/हिंदी/मराठी टायपिंग.", rate: 20, unit: "प्रति पान" },
       { id: 3, category: "office", title: "PPT / Canva", role: "क्रिएटिव्ह डिझाइन", desc: "व्यावसायिक सादरीकरणे, पोस्टर आणि सोशल मीडिया बॅनर.", rate: 299, unit: "प्रति डिझाइन" },
-      { id: 4, category: "office", title: "आभासी सहाय्यक", role: "जागतिक", desc: "आंतरराष्ट्रीय ग्राहकांसाठी ईमेल व्यवस्थापन, वेळापत्रक आणि संशोधन.", rate: 999, unit: "प्रति तास" },
       { id: 201, category: "daily", title: "फॉर्म भरणे", role: "मदत", desc: "ऑनलाइन सरकारी फॉर्म, परीक्षा नोंदणी किंवा केवायसी अपडेटमध्ये मदत.", rate: 49, unit: "प्रति फॉर्म" },
       { id: 202, category: "daily", title: "स्थानिक कामे", role: "लोकल हेल्प", desc: "किराणा खरेदी, बँक चेक जमा करणे किंवा बानेरमध्ये कुरिअर पिकअप/डिलिव्हरी.", rate: 99, unit: "प्रति ट्रिप" },
       { id: 203, category: "daily", title: "रांग व्यवस्थापक", role: "लोकल हेल्प", desc: "तिकीट, प्रवेश किंवा सरकारी कार्यालयांसाठी रांगेत उभे राहणे.", rate: 149, unit: "प्रति तास" }
@@ -307,8 +308,7 @@ const translations = {
       cat_tech: "तंत्रज्ञान आणि आयटी",
       cat_office: "ऑफिस आणि डेटा",
       cat_daily: "दैनंदिन कामे",
-      tech_stack: "टेक आणि नॉन-टेक तज्ञ",
-      intl_toggle: "आंतरराष्ट्रीय दर दर्शवा"
+      tech_stack: "टेक आणि नॉन-टेक तज्ञ"
     },
     contact: {
       title: "संपर्क माहिती",
@@ -372,10 +372,11 @@ const translations = {
     },
     payment: {
       title: "చెల్లింపు పద్ధతులు",
-      desc: "PhonePe / WhatsApp Pay / BHIM ద్వారా స్కాన్ చేయండి",
+      desc: "సురక్షిత చెల్లింపు గేట్‌వేలు",
       upi: "UPI ID:",
       copy: "కాపీ",
-      selectCountry: "చెల్లింపు వివరాల కోసం దేశాన్ని ఎంచుకోండి"
+      selectCountry: "చెల్లింపు వివరాల కోసం దేశాన్ని ఎంచుకోండి",
+      payToggle: { india: "భారతదేశం (UPI)", intl: "అంతర్జాతీయ (బ్యాంకు)" }
     },
     legal: {
       title: "చట్టపరమైన & విధానాలు",
@@ -396,11 +397,9 @@ const translations = {
       { id: 101, category: "tech", title: "వెబ్ డెవలప్‌మెంట్", role: "IT సేవలు", desc: "సింగిల్ పేజీ వెబ్‌సైట్లు, ల్యాండింగ్ పేజీలు లేదా పోర్ట్‌ఫోలియోలు. అల్ట్రా ఫాస్ట్ & మొబైల్ ఫ్రెండ్లీ.", rate: 1999, unit: "ప్రారంభ ధర" },
       { id: 102, category: "tech", title: "యాప్ డిజైన్", role: "IT సేవలు", desc: "Android లేదా iOS యాప్‌ల కోసం క్లీన్ UI/UX డిజైన్ (Figma/Images).", rate: 2499, unit: "ప్రారంభ ధర" },
       { id: 103, category: "tech", title: "IT మద్దతు", role: "టెక్ సేవలు", desc: "PC/ల్యాప్‌టాప్ నెమ్మదిగా ఉంటే సరిచేయడం, సాఫ్ట్‌వేర్ ఇన్‌స్టాలేషన్, వైరస్ తొలగింపు.", rate: 199, unit: "సందర్శనకు" },
-      { id: 104, category: "tech", title: "రిమోట్ IT", role: "అంతర్జాతీయ", desc: "ప్రపంచ ఖాతాదారులకు రిమోట్ డెస్క్‌టాప్ మద్దతు. వైరస్ తొలగింపు & సెటప్.", rate: 1499, unit: "గంటకు" },
       { id: 1, category: "office", title: "డేటా ఎంట్రీ", role: "డేటా స్పెషలిస్ట్", desc: "Excel/Wordలో డేటాను టైప్ చేయడం. 100% ఖచ్చితత్వం.", rate: 199, unit: "గంటకు" },
       { id: 2, category: "office", title: "టైపింగ్ పని", role: "డాక్యుమెంట్ పని", desc: "లీగల్ లేదా కాలేజీ డాక్యుమెంట్ల కోసం ఇంగ్లీష్/హిందీ/మరాఠీ టైపింగ్.", rate: 20, unit: "పేజీకి" },
       { id: 3, category: "office", title: "PPT / Canva", role: "డిజైన్", desc: "ప్రొఫెషనల్ ప్రెజెంటేషన్లు, పోస్టర్లు మరియు సోషల్ మీడియా బ్యానర్లు.", rate: 299, unit: "డిజైన్‌కు" },
-      { id: 4, category: "office", title: "వర్చువల్ అసిస్టెంట్", role: "గ్లోబల్", desc: "అంతర్జాతీయ ఖాతాదారుల కోసం ఇమెయిల్ నిర్వహణ, షెడ్యూలింగ్ మరియు పరిశోధన.", rate: 999, unit: "గంటకు" },
       { id: 201, category: "daily", title: "ఫారమ్ నింపడం", role: "అడ్మిన్ సహాయం", desc: "ఆన్‌లైన్ ప్రభుత్వ ఫారమ్‌లు, పరీక్ష రిజిస్ట్రేషన్‌లు లేదా KYC అప్‌డేట్‌లు.", rate: 49, unit: "ఫారమ్‌కు" },
       { id: 202, category: "daily", title: "స్థానిక పనులు", role: "లోకల్ హెల్ప్", desc: "కిరాణా షాపింగ్, బ్యాంక్ చెక్ డ్రాప్, లేదా బానేర్‌లో కొరియర్ పికప్/డెలివరీ.", rate: 99, unit: "ట్రిప్‌కు" },
       { id: 203, category: "daily", title: "క్యూ మేనేజర్", role: "లోకల్ హెల్ప్", desc: "టిక్కెట్లు, అడ్మిషన్లు లేదా ప్రభుత్వ కార్యాలయాల కోసం క్యూలో నిలబడటం.", rate: 149, unit: "గంటకు" }
@@ -410,8 +409,7 @@ const translations = {
       cat_tech: "టెక్నాలజీ & IT",
       cat_office: "ఆఫీస్ & డేటా",
       cat_daily: "రోజువారీ పనులు",
-      tech_stack: "టెక్ & నాన్-టెక్ నిపుణుడు",
-      intl_toggle: "అంతర్జాతీయ ధరలను చూపించు"
+      tech_stack: "టెక్ & నాన్-టెక్ నిపుణుడు"
     },
     contact: {
       title: "సంప్రదింపు వివరాలు",
@@ -496,6 +494,7 @@ export default function App() {
   
   const [intlMode, setIntlMode] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState('USD');
+  const [paymentMethod, setPaymentMethod] = useState('india'); // 'india' or 'intl'
 
   const t = translations[lang];
 
@@ -732,33 +731,115 @@ export default function App() {
 
       <NeubrutalCard color="bg-blue-100" className="mb-12 text-center">
          <h3 className="text-2xl font-black mb-4 flex items-center justify-center gap-2">{t.payment.title} <CreditCard size={28}/></h3>
-         <p className="font-bold mb-4">{t.payment.desc}</p>
          
-         <div className="flex flex-wrap justify-center gap-4 mb-6">
-            {[
-              {name: 'PhonePe', src: 'public/qr-phonepe.png'},
-              {name: 'WhatsApp', src: 'public/qr-whatsapp.png'},
-              {name: 'BHIM', src: 'public/qr-bhim.png'},
-              {name: 'UPI Intl', src: 'public/qr-upi.png'}
-            ].map((pay) => (
-                <div key={pay.name} className="bg-white border-2 border-black p-2 shadow-sm w-32">
-                    <img 
-                        src={pay.src} 
-                        alt={`${pay.name} QR Code`}
-                        className="w-full h-auto mb-2"
-                        onError={(e) => {
-                          e.target.onerror = null; 
-                          e.target.src=`https://placehold.co/100x100/2563EB/FFFFFF?text=${pay.name}+QR`;
-                        }}
-                    />
-                    <p className="text-xs font-bold">{pay.name}</p>
-                </div>
-            ))}
+         <div className="flex justify-center gap-4 mb-6">
+            <button 
+               onClick={() => setPaymentMethod('india')}
+               className={`px-4 py-2 border-2 border-black font-bold text-sm ${paymentMethod === 'india' ? 'bg-black text-white' : 'bg-white text-black'}`}
+            >
+               {t.payment.payToggle.india}
+            </button>
+            <button 
+               onClick={() => setPaymentMethod('intl')}
+               className={`px-4 py-2 border-2 border-black font-bold text-sm ${paymentMethod === 'intl' ? 'bg-black text-white' : 'bg-white text-black'}`}
+            >
+               {t.payment.payToggle.intl}
+            </button>
          </div>
 
-         <div className="inline-block bg-white border-2 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <p className="font-mono font-bold text-lg break-all">{t.payment.upi} <span className="bg-yellow-200 px-1">918329004424@waicici</span></p>
-         </div>
+         {paymentMethod === 'india' ? (
+           <>
+             <p className="font-bold mb-4">{t.payment.desc}</p>
+             <div className="flex flex-wrap justify-center gap-4 mb-6">
+                {[
+                  {name: 'PhonePe', src: 'public/ph.png'},
+                  {name: 'WhatsApp', src: 'public/wa.png'},
+                  {name: 'BHIM', src: 'public/bhim.jpeg'},
+                  {name: 'GPAY', src: 'public/intl.png'}
+                ].map((pay) => (
+                    <div key={pay.name} className="bg-white border-2 border-black p-2 shadow-sm w-32">
+                        <img 
+                            src={pay.src} 
+                            alt={`${pay.name} QR Code`}
+                            className="w-full h-auto mb-2"
+                            onError={(e) => {
+                              e.target.onerror = null; 
+                              e.target.src=`https://placehold.co/100x100/2563EB/FFFFFF?text=${pay.name}`;
+                            }}
+                        />
+                        <p className="text-xs font-bold">{pay.name}</p>
+                    </div>
+                ))}
+             </div>
+             <div className="inline-block bg-white border-2 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <p className="font-mono font-bold text-lg break-all">{t.payment.upi} <span className="bg-yellow-200 px-1">918329004424@waicici</span></p>
+             </div>
+           </>
+         ) : (
+           <>
+              <p className="font-bold mb-4">International Payment Methods</p>
+              
+              {/* PayPal QR Code */}
+              <div className="flex justify-center mb-6">
+                  <div className="bg-white border-2 border-black p-2 shadow-sm w-40">
+                      <img 
+                          src="public/paypal.png" 
+                          alt="PayPal QR Code"
+                          className="w-full h-auto mb-2"
+                          onError={(e) => {
+                            e.target.onerror = null; 
+                            e.target.src=`public/paypal.png`;
+                          }}
+                      />
+                      <p className="text-xs font-bold">PayPal</p>
+                  </div>
+              </div>
+
+              <div className="text-left bg-white border-2 border-black p-4 mb-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] max-w-2xl mx-auto space-y-6">
+                
+                {/* UAE */}
+                <div className="border-b-2 border-gray-200 pb-4">
+                  <h4 className="font-black text-lg mb-2">UAE (United Arab Emirates)</h4>
+                  <p className="text-sm"><span className="font-bold">Bank:</span> Standard Chartered</p>
+                  <p className="text-sm"><span className="font-bold">Address:</span> Standard Chartered Tower, Emaar Square Dubai, UAE</p>
+                  <p className="text-sm"><span className="font-bold">SWIFT:</span> SCBLAEADXXX</p>
+                  <p className="text-sm"><span className="font-bold">IBAN:</span> AE550446420010001414704</p>
+                  <p className="text-sm"><span className="font-bold">Beneficiary:</span> Arun Ammisetty</p>
+                </div>
+
+                {/* Australia */}
+                <div className="border-b-2 border-gray-200 pb-4">
+                  <h4 className="font-black text-lg mb-2">Australia</h4>
+                  <p className="text-sm"><span className="font-bold">Bank:</span> Citibank</p>
+                  <p className="text-sm"><span className="font-bold">Address:</span> 2 Park Street, Sydney NSW 2000</p>
+                  <p className="text-sm"><span className="font-bold">BSB:</span> 248024</p>
+                  <p className="text-sm"><span className="font-bold">Account:</span> 10516966</p>
+                  <p className="text-sm"><span className="font-bold">Beneficiary:</span> Arun Ammisetty</p>
+                </div>
+
+                {/* Japan */}
+                <div className="border-b-2 border-gray-200 pb-4">
+                  <h4 className="font-black text-lg mb-2">Japan</h4>
+                  <p className="text-sm"><span className="font-bold">Bank:</span> MUFG Bank, Ltd.</p>
+                  <p className="text-sm"><span className="font-bold">Address:</span> 7-1 Marunouchi 2-Chome, Chiyoda-ku Tokyo, Japan</p>
+                  <p className="text-sm"><span className="font-bold">Bank Code:</span> 0005</p>
+                  <p className="text-sm"><span className="font-bold">Branch:</span> 869</p>
+                  <p className="text-sm"><span className="font-bold">Account:</span> 4674430 (Savings)</p>
+                  <p className="text-sm"><span className="font-bold">Beneficiary:</span> ﾍﾟｲｵﾆｱ ｼﾞﾔﾊﾟﾝ(ｶ</p>
+                </div>
+
+                {/* Eurozone */}
+                <div>
+                  <h4 className="font-black text-lg mb-2">Eurozone</h4>
+                  <p className="text-sm"><span className="font-bold">Bank:</span> Banking Circle S.A.</p>
+                  <p className="text-sm"><span className="font-bold">Address:</span> 2, Boulevard de la Foire L-1528 LUXEMBOURG</p>
+                  <p className="text-sm"><span className="font-bold">IBAN:</span> LU744080000045726924</p>
+                  <p className="text-sm"><span className="font-bold">BIC:</span> BCIRLULL</p>
+                  <p className="text-sm"><span className="font-bold">Beneficiary:</span> Arun Ammisetty</p>
+                </div>
+              </div>
+           </>
+         )}
       </NeubrutalCard>
 
       <div className="space-y-4">
@@ -1105,9 +1186,9 @@ export default function App() {
                       918329004424@waicici
                     </div>
                     <div className="flex gap-2 mt-2">
-                       <img src="public/ph.png" alt="PhonePe" className="w-8 h-8 border border-black"/>
-                       <img src="public/wa.png" alt="WhatsApp" className="w-8 h-8 border border-black"/>
-                       <img src="public/bhim.jpeg" alt="UPI" className="w-8 h-8 border border-black"/>
+                       <img src="public/ph.png" alt="PhonePe" className="w-16 h-16 border border-black"/>
+                       <img src="public/wa.png" alt="WhatsApp" className="w-16 h-16 border border-black"/>
+                       <img src="public/bhim.jpeg" alt="UPI" className="w-16 h-16 border border-black"/>
                     </div>
                   </>
                 )}
@@ -1120,6 +1201,16 @@ export default function App() {
                     <p><span className="font-bold">IBAN:</span> AE550446420010001414704</p>
                     <p><span className="font-bold">Beneficiary:</span> Arun Ammisetty</p>
                     <p className="opacity-75 text-[10px]">ARUN CHANDRASHEKHAR AMMISETTY</p>
+                    
+                    <div className="mt-4">
+                       <p className="font-bold text-xs uppercase opacity-75 mb-2">Or Pay via PayPal</p>
+                       <img 
+                          src="public/paypal.png" 
+                          alt="PayPal QR" 
+                          className="w-20 h-20 border border-black"
+                          onError={(e) => { e.target.onerror = null; e.target.src=`public/paypal.png`; }}
+                       />
+                    </div>
                   </div>
                 )}
 
@@ -1131,6 +1222,16 @@ export default function App() {
                     <p><span className="font-bold">Account:</span> 10516966</p>
                     <p><span className="font-bold">Beneficiary:</span> Arun Ammisetty</p>
                     <p className="opacity-75 text-[10px]">ARUN CHANDRASHEKHAR AMMISETTY</p>
+                    
+                    <div className="mt-4">
+                       <p className="font-bold text-xs uppercase opacity-75 mb-2">Or Pay via PayPal</p>
+                       <img 
+                          src="public/paypal.png" 
+                          alt="PayPal QR" 
+                          className="w-20 h-20 border border-black"
+                          onError={(e) => { e.target.onerror = null; e.target.src=`public/paypal.png`; }}
+                       />
+                    </div>
                   </div>
                 )}
 
@@ -1142,6 +1243,16 @@ export default function App() {
                     <p><span className="font-bold">Branch Code:</span> 869</p>
                     <p><span className="font-bold">Account:</span> 4674430 (Savings)</p>
                     <p><span className="font-bold">Beneficiary:</span> ﾍﾟｲｵﾆｱ ｼﾞﾔﾊﾟﾝ(ｶ</p>
+                    
+                    <div className="mt-4">
+                       <p className="font-bold text-xs uppercase opacity-75 mb-2">Or Pay via PayPal</p>
+                       <img 
+                          src="public/paypal.png" 
+                          alt="PayPal QR" 
+                          className="w-20 h-20 border border-black"
+                          onError={(e) => { e.target.onerror = null; e.target.src=`public/paypal.png`; }}
+                       />
+                    </div>
                   </div>
                 )}
                 
@@ -1153,6 +1264,16 @@ export default function App() {
                     <p><span className="font-bold">BIC:</span> BCIRLULL</p>
                     <p><span className="font-bold">Beneficiary:</span> Arun Ammisetty</p>
                     <p className="opacity-75 text-[10px]">ARUN CHANDRASHEKHAR AMMISETTY</p>
+                    
+                    <div className="mt-4">
+                       <p className="font-bold text-xs uppercase opacity-75 mb-2">Or Pay via PayPal</p>
+                       <img 
+                          src="public/paypal.png" 
+                          alt="PayPal QR" 
+                          className="w-20 h-20 border border-black"
+                          onError={(e) => { e.target.onerror = null; e.target.src=`public/paypal.png`; }}
+                       />
+                    </div>
                   </div>
                 )}
              </div>
