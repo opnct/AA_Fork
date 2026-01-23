@@ -1294,7 +1294,6 @@ export default function App() {
              <div className="flex gap-4 mb-6">
                 <a href="https://go.ly/am" target="_blank" className={`p-2 border-2 border-black transition-all hover:bg-black hover:text-white ${darkMode ? 'border-white hover:bg-white hover:text-black' : ''}`}><Globe size={20} /></a>
                 <a href="#" className={`p-2 border-2 border-black transition-all hover:bg-black hover:text-white ${darkMode ? 'border-white hover:bg-white hover:text-black' : ''}`}><Linkedin size={20} /></a>
-                <a href="#" className={`p-2 border-2 border-black transition-all hover:bg-black hover:text-white ${darkMode ? 'border-white hover:bg-white hover:text-black' : ''}`}><Instagram size={20} /></a>
              </div>
              
              <div className="border-2 border-black p-4 inline-block shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] bg-white text-black">
