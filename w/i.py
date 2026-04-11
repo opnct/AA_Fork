@@ -1,3 +1,12 @@
+import os
+
+def update_invoice_generator():
+    filepath = "src/pages/InvoiceGenerator/index.jsx"
+    os.makedirs(os.path.dirname(filepath), exist_ok=True)
+
+    # We extract the exact code you provided, adding only the necessary imports 
+    # and the default export required for the React Router to work.
+    content = r'''
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   X, Shield, Lock, Printer, PenTool, FileCheck, Trash2, Stamp, FileSignature 
@@ -934,3 +943,12 @@ const InvoiceGeneratorView = ({ setIsAuthenticated, isAuthenticated }) => {
 };
 
 export default InvoiceGeneratorView;
+'''
+
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write(content.strip() + "\n")
+        
+    print(f"✅ Successfully replaced {filepath} with the exact, un-altered Invoice and Contract Generator code.")
+
+if __name__ == "__main__":
+    update_invoice_generator()
