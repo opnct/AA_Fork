@@ -1,83 +1,175 @@
-import React, { useRef } from 'react';
-import { X } from 'lucide-react';
-import { services } from '../../data/content';
+import React, { useState, useEffect, useRef } from 'react';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { auth } from '../../config/firebase';
+import { ChevronDown, Monitor, User, ShieldCheck, LogOut, Terminal as TerminalIcon } from 'lucide-react';
 
-const Header = ({ navigate, currentView, isMenuOpen, setIsMenuOpen }) => {
+const Header = ({ navigate, setIsMenuOpen }) => {
+  const [user, setUser] = useState(null);
+  const [activeMenu, setActiveMenu] = useState(null);
   const logoPressTimeoutRef = useRef(null);
+  const menuRef = useRef(null);
 
+  // 1. Firebase Auth Listener
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // 2. Click Outside handler for menus
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setActiveMenu(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // 3. Secret Admin Access (Long Press Logo)
   const handleLogoMouseDown = () => {
-      logoPressTimeoutRef.current = setTimeout(() => {
-          navigate('invoice');
-          logoPressTimeoutRef.current = null; 
-      }, 3000);
+    logoPressTimeoutRef.current = setTimeout(() => {
+      navigate('invoice');
+      logoPressTimeoutRef.current = null;
+    }, 3000);
   };
 
   const handleLogoMouseUp = () => {
-      if (logoPressTimeoutRef.current) {
-          clearTimeout(logoPressTimeoutRef.current);
-          navigate('home'); 
-      }
+    if (logoPressTimeoutRef.current) {
+      clearTimeout(logoPressTimeoutRef.current);
+      navigate('home');
+    }
   };
 
-  return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-sm border-b-2 border-black h-20 flex items-center justify-between px-6 lg:px-12 print:hidden">
-      <div 
-        onMouseDown={handleLogoMouseDown} 
-        onMouseUp={handleLogoMouseUp} 
-        onTouchStart={handleLogoMouseDown} 
-        onTouchEnd={handleLogoMouseUp}
-        className="flex flex-col cursor-pointer group select-none"
+  const toggleMenu = (menuName) => {
+    setActiveMenu(activeMenu === menuName ? null : menuName);
+  };
+
+  const handleAction = (route) => {
+    navigate(route);
+    setActiveMenu(null);
+  };
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    setActiveMenu(null);
+    navigate('home');
+  };
+
+  const MenuItem = ({ label, items, menuName }) => (
+    <div className="relative">
+      <button
+        onClick={() => toggleMenu(menuName)}
+        className={`px-3 py-1 text-sm transition-colors hover:bg-editor-panel ${
+          activeMenu === menuName ? 'bg-editor-panel text-editor-keyword' : 'text-editor-text'
+        }`}
       >
-        <h1 className="text-2xl font-black uppercase leading-none tracking-tighter group-hover:opacity-70 transition-opacity">
-          Arun <span className="text-blue-600">/</span> Ammisetty
-        </h1>
-      </div>
-
-      <div className="hidden lg:flex gap-8 font-bold text-sm uppercase tracking-widest">
-        <button onClick={() => navigate('home')} className={`hover:text-blue-600 ${currentView === 'home' ? 'text-blue-600' : ''}`}>Home</button>
-        <button onClick={() => navigate('about')} className={`hover:text-blue-600 ${currentView === 'about' ? 'text-blue-600' : ''}`}>About</button>
-        <button onClick={() => navigate('services')} className={`hover:text-blue-600 ${currentView === 'services' ? 'text-blue-600' : ''}`}>Services</button>
-        <button onClick={() => navigate('projects')} className={`hover:text-blue-600 ${currentView === 'projects' ? 'text-blue-600' : ''}`}>Projects</button>
-        <button onClick={() => navigate('blog')} className={`hover:text-blue-600 ${currentView === 'blog' ? 'text-blue-600' : ''}`}>Blog</button>
-        <button onClick={() => navigate('contact')} className={`px-6 py-2 bg-black text-white hover:bg-blue-600 hover:text-black border-2 border-black transition-all ${currentView === 'contact' ? 'bg-blue-600 text-black' : ''}`}>Contact</button>
-      </div>
-
-      <button className="lg:hidden flex flex-col justify-center gap-1.5 w-8 h-8 group" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-        {isMenuOpen ? (
-           <X size={32} />
-        ) : (
-          <>
-            <span className="block w-full h-1 bg-black group-hover:bg-blue-600 transition-colors"></span>
-            <span className="block w-full h-1 bg-black group-hover:bg-blue-600 transition-colors"></span>
-          </>
-        )}
+        {label}
       </button>
-
-      {isMenuOpen && (
-        <div className="absolute top-20 left-0 w-full h-[calc(100vh-80px)] bg-white border-t-2 border-black flex flex-col overflow-y-auto">
-          <div className="p-8 gap-6 flex flex-col font-black text-3xl uppercase tracking-widest pb-32">
-            <button onClick={() => navigate('home')} className="text-left hover:text-blue-600">Home</button>
-            <button onClick={() => navigate('about')} className="text-left hover:text-blue-600">About</button>
-            <button onClick={() => navigate('services')} className="text-left hover:text-blue-600">Services</button>
-            <div className="pl-6 flex flex-col gap-4 text-xl text-gray-500 border-l-4 border-gray-200">
-              {services.map(service => (
-                <button key={service.id} onClick={() => navigate('service-detail')} className="text-left hover:text-blue-600 font-bold">
-                  {service.title}
-                </button>
-              ))}
-            </div>
-            <button onClick={() => navigate('projects')} className="text-left hover:text-blue-600">Projects</button>
-            <button onClick={() => navigate('blog')} className="text-left hover:text-blue-600">Blog</button>
-            <div className="h-px bg-gray-200 w-full my-2"></div>
-            <button onClick={() => navigate('resources')} className="text-left hover:text-blue-600 text-lg text-gray-500 font-bold">Resources Hub</button>
-            <button onClick={() => navigate('faq')} className="text-left hover:text-blue-600 text-lg text-gray-500 font-bold">FAQ</button>
-            <button onClick={() => navigate('privacy')} className="text-left hover:text-blue-600 text-lg text-gray-500 font-bold">Privacy Policy</button>
-            <button onClick={() => navigate('terms')} className="text-left hover:text-blue-600 text-lg text-gray-500 font-bold">Terms of Service</button>
-            <button onClick={() => navigate('sitemap')} className="text-left hover:text-blue-600 text-lg text-gray-500 font-bold">Site Map</button>
-            <button onClick={() => navigate('contact')} className="text-left hover:text-blue-600 text-blue-600 mt-4">Contact</button>
-          </div>
+      {activeMenu === menuName && (
+        <div className="absolute left-0 top-full z-[100] w-56 border border-editor-border bg-editor-panel py-1 shadow-2xl animate-in fade-in zoom-in-95 duration-100">
+          {items.map((item, idx) => (
+            <button
+              key={idx}
+              onClick={item.action}
+              className="flex w-full items-center justify-between px-4 py-2 text-left text-sm text-editor-text hover:bg-editor-selection hover:text-white"
+            >
+              <span className="flex items-center gap-2">
+                {item.icon} {item.label}
+              </span>
+              <span className="text-[10px] text-gray-500 font-mono">{item.shortcut}</span>
+            </button>
+          ))}
         </div>
       )}
+    </div>
+  );
+
+  return (
+    <header className="fixed top-0 left-0 z-50 w-full border-b border-editor-border bg-editor-bg px-4 h-12 flex items-center justify-between print:hidden select-none font-mono">
+      
+      <div className="flex items-center gap-2" ref={menuRef}>
+        {/* Window Icon/Title */}
+        <div 
+          onMouseDown={handleLogoMouseDown} 
+          onMouseUp={handleLogoMouseUp} 
+          onTouchStart={handleLogoMouseDown} 
+          onTouchEnd={handleLogoMouseUp}
+          className="flex items-center gap-2 pr-4 cursor-pointer border-r border-editor-border h-8 group"
+        >
+          <div className="w-5 h-5 bg-editor-blue rounded-sm flex items-center justify-center text-editor-bg font-black text-[10px]">AA</div>
+          <span className="text-xs font-bold text-gray-400 group-hover:text-white transition-colors">arun_portfolio.jsx</span>
+        </div>
+
+        {/* Notepad Style Menus */}
+        <div className="hidden md:flex items-center">
+          <MenuItem 
+            label="File" 
+            menuName="file"
+            items={[
+              { label: 'Home', action: () => handleAction('home'), shortcut: 'Alt+H' },
+              { label: 'About', action: () => handleAction('about'), shortcut: 'Alt+A' },
+              { label: 'Sitemap', action: () => handleAction('sitemap'), shortcut: 'Ctrl+P' },
+              { label: 'Logout', action: handleLogout, shortcut: 'Ctrl+Q' }
+            ]} 
+          />
+          <MenuItem 
+            label="Edit" 
+            menuName="edit"
+            items={[
+              { label: 'Services', action: () => handleAction('services'), shortcut: 'Alt+S' },
+              { label: 'Projects', action: () => handleAction('projects'), shortcut: 'Alt+P' },
+              { label: 'Guestbook', action: () => handleAction('guestbook'), shortcut: 'Alt+G' }
+            ]} 
+          />
+          <MenuItem 
+            label="View" 
+            menuName="view"
+            items={[
+              { label: 'Blog', action: () => handleAction('blog'), shortcut: 'Alt+B' },
+              { label: 'Status', action: () => handleAction('status'), shortcut: 'Alt+L' },
+              { label: 'Resources', action: () => handleAction('resources'), shortcut: 'Alt+R' },
+              { label: 'FAQ', action: () => handleAction('faq'), shortcut: 'Alt+F' }
+            ]} 
+          />
+          <MenuItem 
+            label="Terminal" 
+            menuName="terminal"
+            items={[
+              { label: 'Security Scanner', action: () => handleAction('scanner'), icon: <ShieldCheck size={14}/>, shortcut: '`' },
+              { label: 'Pricing Estimator', action: () => handleAction('estimator'), icon: <TerminalIcon size={14}/>, shortcut: 'Ctrl+E' },
+              { label: 'ROI Calculator', action: () => handleAction('roi'), icon: <Monitor size={14}/>, shortcut: 'Ctrl+R' }
+            ]} 
+          />
+        </div>
+      </div>
+
+      <div className="flex items-center gap-4">
+        {/* Dynamic CTA / User Portal */}
+        {user ? (
+          <button 
+            onClick={() => handleAction(user.email === 'dv3nt@duck.com' ? 'invoice' : 'client-portal')}
+            className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-editor-variable hover:text-white transition-colors"
+          >
+            <User size={14} /> {user.email === 'dv3nt@duck.com' ? 'Admin' : 'Client Dashboard'}
+          </button>
+        ) : (
+          <button 
+            onClick={() => handleAction('contact')}
+            className="px-5 py-1.5 bg-editor-blue text-editor-bg text-xs font-bold uppercase rounded-full hover:bg-white transition-all shadow-lg"
+          >
+            Contact.exe
+          </button>
+        )}
+
+        {/* Simple Mobile Toggle (Fallback) */}
+        <button className="md:hidden text-editor-text" onClick={() => setIsMenuOpen(true)}>
+          <ChevronDown size={20} />
+        </button>
+      </div>
+
     </header>
   );
 };
