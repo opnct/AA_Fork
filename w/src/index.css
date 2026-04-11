@@ -2,19 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Base styles to ensure full height and smooth scrolling */
-html, body {
-  scroll-behavior: smooth;
-  height: 100%;
-  margin: 0;
-  padding: 0;
+.pattern-grid {
+  background-image: radial-gradient(#000 1px, transparent 1px);
+  background-size: 20px 20px;
 }
-
-/* Custom Scrollbar for the menu */
-.scrollbar-hide::-webkit-scrollbar {
-    display: none;
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
-.scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
 }
