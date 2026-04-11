@@ -3,49 +3,23 @@
 @tailwind utilities;
 
 @layer base {
-  /* Global reset to dark editor theme */
-  body {
-    @apply bg-editor-bg text-editor-text antialiased font-mono overflow-x-hidden;
-    /* Simulating a clean, dark Mica-like surface */
-    background-attachment: fixed;
-  }
-
-  /* Strict text selection color matching the reference image */
-  ::selection {
-    @apply bg-editor-selection text-white;
-  }
-
-  /* Custom scrollbar to match modern IDE/Notepad styles */
-  ::-webkit-scrollbar {
-    width: 12px;
-    height: 12px;
-  }
-
-  ::-webkit-scrollbar-track {
-    @apply bg-editor-bg;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    @apply bg-editor-border;
-    border: 3px solid #1e1e1e;
-    border-radius: 10px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: #454545;
-  }
-
-  /* Improving font rendering for code-style clarity */
-  * {
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+body {
+@apply bg-black text-white antialiased;
+font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-@layer components {
-  /* Utility for a subtle panel backdrop */
-  .editor-panel {
-    @apply bg-editor-panel border border-editor-border;
-  }
+/* Correct way to handle selection in CSS with Tailwind tokens */
+::selection {
+background-color: #276EF1;
+color: #FFFFFF;
+}
+}
+
+@layer utilities {
+.bg-topo {
+background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 80c20-10 40 10 60 0s30-40 60-30 40 30 70 10' stroke='%23ffffff' stroke-opacity='0.08' fill='none'/%3E%3C/svg%3E");
+}
+.bento-card {
+@apply bg-zinc-900 border border-zinc-800 transition-all duration-500 hover:border-blue-600;
+}
 }

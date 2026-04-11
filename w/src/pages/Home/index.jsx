@@ -1,148 +1,167 @@
 import React from 'react';
 import { 
-  ArrowRight, Globe, Shield, Check, FileCode, 
-  Terminal as TerminalIcon, Folder, ChevronRight, Cpu 
+  ArrowRight, Globe, Shield, Check, Zap, 
+  Terminal, Activity, Maximize, Smartphone, 
+  Code2, Briefcase, MessageSquare
 } from 'lucide-react';
 
 const Home = ({ navigate }) => {
-  // Real logic for syntax highlighted lines
-  const codeLines = [
-    { line: 1, type: 'keyword', text: 'export const' },
-    { line: 1, type: 'variable', text: ' Professional ' },
-    { line: 1, type: 'keyword', text: '= {' },
-    { line: 2, type: 'property', text: '  goal' },
-    { line: 2, type: 'keyword', text: ':' },
-    { line: 2, type: 'string', text: ' "BUILD",' },
-    { line: 3, type: 'property', text: '  security' },
-    { line: 3, type: 'keyword', text: ':' },
-    { line: 3, type: 'string', text: ' "SECURE",' },
-    { line: 4, type: 'property', text: '  business' },
-    { line: 4, type: 'keyword', text: ':' },
-    { line: 4, type: 'string', text: ' "GROW"' },
-    { line: 5, type: 'keyword', text: '};' }
-  ];
-
   return (
-    <div className="animate-in fade-in duration-500 pt-12 min-h-screen bg-[#1e1e1e] font-mono selection:bg-[#264f78]">
-      <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[calc(100vh-48px)]">
-        
-        {/* Section 1: IDE Sidebar (Visual) */}
-        <div className="hidden lg:flex lg:col-span-1 flex-col items-center py-6 border-r border-[#333333] bg-[#333333]/20 space-y-8 text-[#858585]">
-           <FileCode size={24} className="text-[#d4d4d4] cursor-pointer" />
-           <Globe size={24} className="hover:text-[#d4d4d4] cursor-pointer" />
-           <Shield size={24} className="hover:text-[#d4d4d4] cursor-pointer" />
-           <Cpu size={24} className="hover:text-[#d4d4d4] cursor-pointer" />
+    <div className="animate-in fade-in duration-700 pt-20 min-h-screen bg-black text-white font-sans selection:bg-uber-blue selection:text-white overflow-hidden">
+      
+      {/* 1. Hero Section: Display Typography + Topo BG */}
+      <div className="relative w-full py-12 lg:py-24 border-b border-white/5 bg-topo">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-uber-blue/10 border border-uber-blue/20 rounded-sm mb-8">
+            <div className="w-2 h-2 bg-uber-blue rounded-full animate-pulse"></div>
+            <span className="text-uber-blue text-[10px] font-bold uppercase tracking-[0.2em]">System Online: Pune, IN</span>
+          </div>
+          <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-extrabold tracking-tighter leading-[0.85] mb-8">
+            BUILD.<br />SECURE.<br /><span className="text-uber-blue">GROW.</span>
+          </h1>
+          <p className="text-xl md:text-2xl text-zinc-400 max-w-2xl font-medium leading-relaxed mb-12">
+            Multi-disciplinary digital infrastructure. High-quality development without delay. Transform your vision into a scalable reality.
+          </p>
+          <div className="flex flex-wrap gap-4">
+            <button onClick={() => navigate('contact')} className="group px-8 py-4 bg-uber-blue text-white font-bold uppercase text-sm tracking-widest flex items-center gap-3 hover:bg-white hover:text-black transition-all">
+              Initiate Project <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </button>
+            <button onClick={() => navigate('projects')} className="px-8 py-4 bg-zinc-900 border border-zinc-800 text-white font-bold uppercase text-sm tracking-widest hover:bg-zinc-800 transition-all">
+              View Directory
+            </button>
+          </div>
         </div>
+      </div>
 
-        {/* Section 2: File Tree Area */}
-        <div className="hidden lg:flex lg:col-span-2 flex-col border-r border-[#333333] bg-[#252526] p-4">
-          <h4 className="text-[10px] uppercase font-bold text-[#858585] mb-4 tracking-widest">Explorer</h4>
-          <div className="space-y-2 text-xs text-[#d4d4d4]">
-            <div className="flex items-center gap-2 text-[#569cd6] font-bold">
-              <ChevronRight size={14} /> <Folder size={14} /> src
-            </div>
-            <div className="pl-4 flex items-center gap-2">
-              <FileCode size={14} className="text-[#569cd6]" /> Home.jsx
-            </div>
-            <div className="pl-4 flex items-center gap-2 text-[#858585]">
-              <FileCode size={14} /> Services.jsx
-            </div>
-            <div className="pl-4 flex items-center gap-2 text-[#858585]">
-              <FileCode size={14} /> Contact.jsx
-            </div>
+      {/* 2. Bento Box Metrics Grid */}
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 py-12 grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        
+        {/* Metric 1 */}
+        <div className="md:col-span-2 bento-card p-8 flex flex-col justify-between h-64">
+          <Globe className="text-uber-blue mb-4" size={32} />
+          <div>
+            <h3 className="text-5xl font-extrabold mb-1">50+</h3>
+            <p className="text-zinc-500 font-bold uppercase text-xs tracking-widest">Global Web Deployments</p>
           </div>
         </div>
 
-        {/* Section 3: Main Editor Hero */}
-        <div className="lg:col-span-6 flex flex-col bg-[#1e1e1e] p-8 lg:p-12 relative overflow-hidden">
-           {/* Section 4: Line Numbers and Code Display */}
-           <div className="flex gap-6">
-              <div className="flex flex-col text-right text-[#858585] text-sm leading-relaxed select-none border-r border-[#333333] pr-4">
-                {Array.from({length: 12}).map((_, i) => <div key={i}>{i + 1}</div>)}
-              </div>
-              <div className="flex-grow">
-                <h2 className="text-[#569cd6] text-sm font-bold uppercase mb-4 animate-pulse">// Multi-Disciplinary Professional</h2>
-                
-                <h1 className="text-4xl sm:text-6xl font-black mb-8 leading-tight tracking-tight break-words">
-                  <span className="text-[#d4d4d4]">BUILD.</span><br />
-                  <span className="text-[#d4d4d4]">SECURE.</span><br />
-                  <span className="text-[#569cd6]">GROW.</span>
-                </h1>
+        {/* Metric 2 */}
+        <div className="md:col-span-2 bento-card p-8 flex flex-col justify-between h-64 bg-zinc-900/50">
+          <Shield className="text-red-500 mb-4" size={32} />
+          <div>
+            <h3 className="text-5xl font-extrabold mb-1">200+</h3>
+            <p className="text-zinc-500 font-bold uppercase text-xs tracking-widest">Vulnerabilities Patched</p>
+          </div>
+        </div>
 
-                <p className="text-[#6a9955] italic text-lg max-w-md mb-10 leading-relaxed">
-                  /* I help businesses build robust web solutions, secure their infrastructure, and grow their digital presence. */
-                </p>
+        {/* Metric 3 (Growth) */}
+        <div className="md:col-span-2 lg:col-span-2 bento-card p-8 flex flex-col justify-between h-64 border-uber-blue/30">
+          <Zap className="text-yellow-400 mb-4" size={32} />
+          <div>
+            <h3 className="text-5xl font-extrabold mb-1">10X</h3>
+            <p className="text-zinc-500 font-bold uppercase text-xs tracking-widest">Business Growth Metrics</p>
+          </div>
+        </div>
 
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <button 
-                    onClick={() => navigate('services')} 
-                    className="px-6 py-2 bg-[#0e639c] text-white text-sm font-bold border border-[#1177bb] hover:bg-[#1177bb] transition-all flex items-center justify-center gap-2 rounded-sm"
-                  >
-                    services.exe <ArrowRight size={16} />
-                  </button>
-                  <button 
-                    onClick={() => navigate('contact')} 
-                    className="px-6 py-2 bg-[#333333] text-[#d4d4d4] text-sm font-bold border border-[#454545] hover:bg-[#454545] transition-all flex items-center justify-center rounded-sm"
-                  >
-                    contact.sh
-                  </button>
-                </div>
+        {/* 3. Tech Stack Panel */}
+        <div className="md:col-span-4 lg:col-span-3 bento-card p-8 relative overflow-hidden group">
+          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-30 transition-opacity">
+            <Code2 size={120} />
+          </div>
+          <h4 className="text-uber-blue font-bold uppercase text-xs tracking-[0.3em] mb-6">Core Stack</h4>
+          <div className="grid grid-cols-3 gap-y-8 gap-x-4">
+            {['React', 'Node.js', 'Firebase', 'PostgreSQL', 'Tailwind', 'Python'].map(tech => (
+              <div key={tech} className="text-sm font-bold border-l-2 border-zinc-800 pl-3 py-1">
+                {tech}
               </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 4. Interactive Call Status Card */}
+        <div className="md:col-span-2 lg:col-span-3 bento-card p-8 bg-zinc-900 flex flex-col justify-center items-center text-center">
+          <Activity className="text-uber-blue mb-4 animate-pulse" size={48} />
+          <h3 className="text-2xl font-extrabold mb-2 uppercase tracking-tighter">Availability</h3>
+          <p className="text-zinc-400 mb-6 text-sm">Open for high-priority contract roles and digital growth consulting.</p>
+          <button onClick={() => navigate('book-call')} className="w-full py-3 border border-white/20 text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all">
+            Schedule Briefing
+          </button>
+        </div>
+
+        {/* 5. Pricing / DM Bento Card (Safety Blue Accent) */}
+        <div className="md:col-span-4 lg:col-span-4 bento-card p-8 bg-uber-blue text-white overflow-hidden relative">
+          <div className="relative z-10">
+            <h3 className="text-4xl font-extrabold tracking-tighter mb-4 uppercase">Affordable pricing available</h3>
+            <p className="text-lg font-bold mb-8 opacity-90 uppercase">DM karo Ya WhatsApp karo</p>
+            <div className="flex gap-4">
+              <a href="https://wa.me/918329000424" target="_blank" rel="noreferrer" className="px-6 py-3 bg-black text-white text-xs font-black uppercase tracking-widest flex items-center gap-2">
+                WhatsApp <ArrowRight size={14}/>
+              </a>
+              <button onClick={() => navigate('pricing')} className="px-6 py-3 border border-white text-white text-xs font-black uppercase tracking-widest">
+                Check Packages
+              </button>
+            </div>
+          </div>
+          <div className="absolute -bottom-10 -right-10 opacity-20 rotate-12">
+            <MessageSquare size={200} />
+          </div>
+        </div>
+
+        {/* 6. Security & Audit Card */}
+        <div className="md:col-span-2 lg:col-span-2 bento-card p-8 border-red-900/50 bg-zinc-950">
+          <Shield className="text-red-600 mb-4" size={24} />
+          <h4 className="font-bold uppercase text-[10px] tracking-widest text-zinc-500 mb-2">Audit Status</h4>
+          <p className="text-lg font-bold leading-tight">Vulnerability assessment available for Enterprise apps.</p>
+          <div className="mt-6 flex items-center gap-2 text-red-500 font-black text-[10px] uppercase">
+             <div className="w-1.5 h-1.5 bg-red-600 rounded-full animate-ping"></div> Active Scanning
+          </div>
+        </div>
+
+        {/* 7. Connectivity Map Section */}
+        <div className="md:col-span-3 lg:col-span-3 bento-card p-8 h-80 relative overflow-hidden bg-topo">
+          <h4 className="font-bold uppercase text-[10px] tracking-widest text-zinc-500 mb-4 flex items-center gap-2">
+            <Maximize size={12}/> Global Network
+          </h4>
+          <div className="absolute inset-0 flex items-center justify-center opacity-40">
+             {/* Simple visual map lines */}
+             <div className="w-full h-px bg-uber-blue absolute rotate-45"></div>
+             <div className="w-full h-px bg-uber-blue absolute -rotate-45"></div>
+             <div className="w-32 h-32 border border-uber-blue/30 rounded-full absolute"></div>
+          </div>
+          <p className="absolute bottom-8 left-8 text-xs font-bold uppercase tracking-widest text-zinc-300">
+            India → UAE → USA → UK
+          </p>
+        </div>
+
+        {/* 8. Mobile First Development */}
+        <div className="md:col-span-3 lg:col-span-3 bento-card p-8 h-80 bg-zinc-900 flex flex-col justify-end">
+          <Smartphone className="text-uber-blue mb-4" size={32} />
+          <h3 className="text-3xl font-extrabold uppercase tracking-tighter mb-2">Apps.</h3>
+          <p className="text-zinc-500 text-sm font-medium">Native & Hybrid mobile solutions optimized for high retention.</p>
+        </div>
+
+        {/* 9. Final Terminal Section */}
+        <div className="col-span-full bento-card p-6 bg-black border-zinc-800 flex flex-col md:flex-row justify-between items-center gap-6">
+           <div className="flex items-center gap-4">
+              <Terminal className="text-uber-blue" size={20} />
+              <p className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
+                root@ammisetty:~# <span className="text-white">transform --vision --reality</span>
+              </p>
+           </div>
+           <div className="flex gap-8 text-[10px] font-black uppercase tracking-widest text-zinc-500">
+              <span className="flex items-center gap-2"><Check size={12} className="text-uber-blue"/> Reliable</span>
+              <span className="flex items-center gap-2"><Check size={12} className="text-uber-blue"/> Scalable</span>
+              <span className="flex items-center gap-2"><Check size={12} className="text-uber-blue"/> Bug-free</span>
            </div>
         </div>
 
-        {/* Section 5: Inspector Panel (Profile Card) */}
-        <div className="lg:col-span-3 bg-[#252526] p-8 lg:p-6 border-l border-[#333333]">
-          
-          <div className="bg-[#1e1e1e] border border-[#333333] p-6 space-y-6 hover:border-[#569cd6] transition-colors duration-500 group">
-             
-             {/* Section 6: User Object Header */}
-             <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 bg-[#264f78] text-white flex items-center justify-center font-black text-xl border border-[#569cd6]">
-                  AA
-                </div>
-                <div>
-                  <h3 className="font-bold text-lg text-[#9cdcfe] tracking-tight">const ArunAmmisetty</h3>
-                  <p className="text-[10px] text-[#858585] uppercase font-bold">Full Stack & Security</p>
-                </div>
-             </div>
-             
-             {/* Section 7: Statistics Properties */}
-             <div className="space-y-4 text-xs">
-               <div className="flex justify-between items-center group-hover:bg-[#264f78]/20 p-2 transition-colors">
-                 <span className="text-[#9cdcfe] flex items-center"><Globe size={14} className="mr-2 text-[#569cd6]"/> webProjects:</span>
-                 <span className="text-[#b5cea8] font-bold">50+</span>
-               </div>
-               <div className="flex justify-between items-center group-hover:bg-[#264f78]/20 p-2 transition-colors">
-                 <span className="text-[#9cdcfe] flex items-center"><Shield size={14} className="mr-2 text-[#569cd6]"/> vulnsPatched:</span>
-                 <span className="text-[#b5cea8] font-bold">200+</span>
-               </div>
-               <div className="flex justify-between items-center group-hover:bg-[#264f78]/20 p-2 transition-colors">
-                 <span className="text-[#9cdcfe] flex items-center"><Check size={14} className="mr-2 text-[#569cd6]"/> satisfaction:</span>
-                 <span className="text-[#b5cea8] font-bold">1.0</span>
-               </div>
-             </div>
-             
-             {/* Section 8: Terminal Status Output */}
-             <div className="mt-8 pt-4 border-t border-[#333333]">
-                <div className="flex items-center gap-2 text-[#6a9955] text-[10px] font-bold">
-                  <TerminalIcon size={12} />
-                  <span>STATUS: AVAILABLE_FOR_FREELANCE</span>
-                </div>
-             </div>
-
-          </div>
-
-          <div className="mt-8 p-4 bg-[#264f78]/10 border border-[#264f78]/30 text-[#9cdcfe] text-[10px] leading-tight">
-             <p className="font-bold mb-2">// DEBUG INFO</p>
-             <p>Environment: Production</p>
-             <p>Location: Pune, IN</p>
-             <p>License: MIT</p>
-          </div>
-
-        </div>
-
       </div>
+
+      {/* Quick WhatsApp Footer Bar */}
+      <div className="fixed bottom-0 left-0 w-full py-3 bg-uber-blue text-white text-center text-[10px] font-black uppercase tracking-[0.4em] z-[60]">
+        Call / WhatsApp: +91 83290 00424
+      </div>
+
     </div>
   );
 };
