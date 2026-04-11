@@ -27,6 +27,12 @@ service cloud.firestore {
       }
     }
 
+    // --- Guestbook Collection ---
+    // Allows public reads and writes so any visitor can leave a message globally.
+    match /guestbook/{messageId} {
+      allow read, write: if true;
+    }
+
     // --- Global Deny ---
     // Catches any queries to collections not explicitly defined above and blocks them.
     match /{document=**} {
