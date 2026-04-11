@@ -3,23 +3,35 @@
 @tailwind utilities;
 
 @layer base {
-body {
-@apply bg-black text-white antialiased;
-font-family: 'Plus Jakarta Sans', sans-serif;
-}
-
-/* Correct way to handle selection in CSS with Tailwind tokens */
-::selection {
-background-color: #276EF1;
-color: #FFFFFF;
-}
+  body {
+    /* Hardcoded hex values bypass PostCSS @apply token resolution errors */
+    background-color: #0d0d0d;
+    color: #f3f4f6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  ::selection {
+    background-color: #ffffff;
+    color: #000000;
+  }
 }
 
 @layer utilities {
-.bg-topo {
-background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 80c20-10 40 10 60 0s30-40 60-30 40 30 70 10' stroke='%23ffffff' stroke-opacity='0.08' fill='none'/%3E%3C/svg%3E");
-}
-.bento-card {
-@apply bg-zinc-900 border border-zinc-800 transition-all duration-500 hover:border-blue-600;
-}
+  .section-border {
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  .card-minimal {
+    background-color: #141414;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .card-minimal:hover {
+    border-color: rgba(255,255,255,0.3);
+  }
 }
