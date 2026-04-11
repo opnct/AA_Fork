@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
-  X, Shield, Lock, Printer, PenTool, FileCheck, Trash2, Stamp, FileSignature 
+  X, Shield, Lock, Printer, PenTool, FileCheck, Trash2, Stamp, FileSignature, LogOut, Loader2
 } from 'lucide-react';
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { auth, db } from '../../config/firebase';
 
 // --- Contract Generator Component ---
 const ContractGeneratorView = () => {
@@ -113,7 +116,6 @@ const ContractGeneratorView = () => {
     return (
         <div className="p-4 lg:p-8 bg-gray-100 min-h-screen">
             <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
-                 {/* Config Panel */}
                  <div className="lg:col-span-4 bg-white border-2 border-black p-6 h-fit print:hidden">
                     <h2 className="text-2xl font-black uppercase mb-6 flex items-center gap-2">
                         <FileSignature size={24} /> Contract Setup
@@ -203,10 +205,8 @@ const ContractGeneratorView = () => {
                     </div>
                  </div>
 
-                 {/* Contract Preview */}
                  <div id="contract-print-area" className="lg:col-span-8 bg-white border-2 border-black p-8 lg:p-16 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.2)] font-serif relative">
                     
-                    {/* Stamp Duty Mark */}
                     <div className="absolute top-8 right-8 border-4 border-double border-red-800 p-4 text-center transform rotate-[-2deg] opacity-80">
                          <div className="flex justify-center mb-1"><Stamp size={24} className="text-red-800"/></div>
                          <h4 className="font-bold text-red-800 uppercase text-xs tracking-widest border-b border-red-800 pb-1 mb-1">Stamp Duty Paid</h4>
@@ -214,14 +214,12 @@ const ContractGeneratorView = () => {
                          <p className="text-[10px] text-red-800 uppercase">Govt of {jurisdiction}</p>
                     </div>
 
-                    {/* Header */}
                     <div className="flex flex-col items-center border-b-2 border-black pb-8 mb-8">
                         <img src="p-removebg-preview.png" alt="Logo" className="h-20 w-auto object-contain mb-4" onError={(e) => e.target.style.display = 'none'} />
                         <h1 className="text-3xl font-black uppercase tracking-widest text-center">{contractType}</h1>
                         <p className="text-sm font-bold text-gray-500 mt-2">Agreement Ref: AA/{new Date().getFullYear()}/{Math.floor(Math.random()*1000)}</p>
                     </div>
 
-                    {/* Intro */}
                     <div className="mb-8 leading-relaxed">
                         <p><strong>THIS AGREEMENT</strong> is made on this <strong>{contractDate}</strong> (the "Execution Date"), by and between:</p>
                         
@@ -238,12 +236,10 @@ const ContractGeneratorView = () => {
                         <p>The Service Provider and the Client are hereinafter individually referred to as a "Party" and collectively as the "Parties".</p>
                     </div>
 
-                    {/* Body */}
                     <div className="prose max-w-none mb-12 whitespace-pre-line text-justify leading-relaxed">
                         {getLegalClauses()}
                     </div>
 
-                    {/* Signatures */}
                     <div className="mt-16 break-inside-avoid">
                         <h3 className="font-bold uppercase tracking-widest text-sm mb-8 text-center border-b border-gray-300 pb-2">IN WITNESS WHEREOF, the Parties have executed this Agreement as of the date first above written.</h3>
                         <div className="grid grid-cols-2 gap-16">
@@ -270,7 +266,6 @@ const ContractGeneratorView = () => {
                         </div>
                     </div>
 
-                    {/* Certificate */}
                     <div className="mt-16 pt-8 border-t-4 border-double border-gray-300 text-center break-before-auto">
                         <Shield size={24} className="mx-auto text-gray-400 mb-2" />
                         <h4 className="font-bold uppercase tracking-widest text-[10px] text-gray-600">Digital Authenticity Certificate</h4>
@@ -295,20 +290,24 @@ const ContractGeneratorView = () => {
     );
 };
 
-// --- Invoice Generator Component (Kept outside App to prevent re-renders) ---
+// --- Invoice Generator Component ---
 const InvoiceGeneratorView = ({ setIsAuthenticated, isAuthenticated }) => {
-  const [passcode, setPasscode] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
-  const [showLUT, setShowLUT] = useState(false); // Toggle for LUT view
-  const [activeTool, setActiveTool] = useState('invoice'); // 'invoice' or 'contract'
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  
+  const [showLUT, setShowLUT] = useState(false); 
+  const [activeTool, setActiveTool] = useState('invoice'); 
 
   const [invoiceData, setInvoiceData] = useState({
-    type: 'Tax Invoice', // Default
+    type: 'Tax Invoice', 
     currency: 'INR', 
     userGstin: '', 
-    gstStatus: 'Registered', // New: Registered or Unregistered
-    clientType: 'Indian', // New: Indian or International
-    isPaid: false, // New: Payment Status
+    gstStatus: 'Registered', 
+    clientType: 'Indian', 
+    isPaid: false, 
     clientName: '',
     clientAddress: '',
     clientGstin: '',
@@ -322,14 +321,46 @@ const InvoiceGeneratorView = ({ setIsAuthenticated, isAuthenticated }) => {
 
   const printRef = useRef();
 
-  const handleLogin = (e) => {
+  // Listen to Firebase Auth State Changes
+  useEffect(() => {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+          if (user && user.email === 'dv3nt@duck.com') {
+              setIsAuthenticated(true);
+          } else {
+              setIsAuthenticated(false);
+          }
+      });
+      return () => unsubscribe();
+  }, [setIsAuthenticated]);
+
+  const handleLogin = async (e) => {
       e.preventDefault();
-      // Super Admin Passcode
-      if (passcode === 'admin2026') {
+      setErrorMsg('');
+      
+      // Strict Check for designated Admin Email
+      if (email !== 'dv3nt@duck.com') {
+          setErrorMsg('Access Denied: Unauthorized email address.');
+          return;
+      }
+
+      setIsLoading(true);
+      try {
+          await signInWithEmailAndPassword(auth, email, password);
           setIsAuthenticated(true);
-          setErrorMsg('');
-      } else {
-          setErrorMsg('Invalid Access Code');
+      } catch (error) {
+          console.error("Auth Error:", error);
+          setErrorMsg('Invalid credentials or authentication failed.');
+      } finally {
+          setIsLoading(false);
+      }
+  };
+
+  const handleLogout = async () => {
+      try {
+          await signOut(auth);
+          setIsAuthenticated(false);
+      } catch (error) {
+          console.error("Logout Error:", error);
       }
   };
 
@@ -357,11 +388,8 @@ const InvoiceGeneratorView = ({ setIsAuthenticated, isAuthenticated }) => {
 
   const calculateTotals = () => {
     const subtotal = invoiceData.items.reduce((acc, item) => acc + (Number(item.qty) * Number(item.rate)), 0);
-    
-    // Logic: Bill of Supply, Receipt Voucher (if advance), Non-GST, Export usually no tax shown on face or different treatment
     const noTaxTypes = ['Bill of Supply', 'Non-GST Invoice', 'Proforma Invoice', 'Receipt Voucher', 'Refund Voucher', 'Export Invoice', 'International Invoice'];
     const isTaxable = !noTaxTypes.includes(invoiceData.type);
-    
     const taxRate = isTaxable ? 0.18 : 0; 
     const taxAmount = subtotal * taxRate;
     const total = subtotal + taxAmount;
@@ -370,8 +398,31 @@ const InvoiceGeneratorView = ({ setIsAuthenticated, isAuthenticated }) => {
 
   const { subtotal, taxAmount, total } = calculateTotals();
 
-  const handlePrint = () => {
-     window.print();
+  // Firebase Real-time save and Print logic
+  const handlePrintAndSave = async () => {
+      setIsSaving(true);
+      try {
+          const invoiceRef = collection(db, 'admin_invoices');
+          await addDoc(invoiceRef, {
+              ...invoiceData,
+              calculations: {
+                  subtotal,
+                  taxAmount,
+                  total
+              },
+              createdAt: serverTimestamp(),
+              author: 'dv3nt@duck.com'
+          });
+          
+          // Trigger the local print dialog after successful save
+          window.print();
+      } catch (error) {
+          console.error("Error saving invoice to Firestore:", error);
+          alert("Failed to sync invoice to cloud, but opening print dialog locally.");
+          window.print(); // Fallback to allow printing even if save fails
+      } finally {
+          setIsSaving(false);
+      }
   };
 
   const getInvoiceTitle = () => {
@@ -434,19 +485,31 @@ const InvoiceGeneratorView = ({ setIsAuthenticated, isAuthenticated }) => {
               <div className="bg-white p-8 border-2 border-black shadow-[8px_8px_0px_0px_#000] w-full max-w-md text-center">
                   <Lock size={48} className="mx-auto mb-6 text-blue-600" />
                   <h2 className="text-2xl font-black uppercase mb-2">Restricted Access</h2>
-                  <p className="text-gray-600 mb-6">Enter Super Admin Passcode.</p>
+                  <p className="text-gray-600 mb-6">Authorized Personnel Only.</p>
                   <form onSubmit={handleLogin} className="space-y-4">
                       <input 
+                          type="email" 
+                          placeholder="Admin Email" 
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="w-full p-3 border-2 border-black focus:outline-none font-bold"
+                          required
+                      />
+                      <input 
                           type="password" 
-                          placeholder="Passcode" 
-                          value={passcode}
-                          onChange={(e) => setPasscode(e.target.value)}
-                          className="w-full p-3 border-2 border-black focus:outline-none text-center font-bold tracking-widest text-xl"
-                          autoFocus
+                          placeholder="Password" 
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          className="w-full p-3 border-2 border-black focus:outline-none font-bold"
+                          required
                       />
                       {errorMsg && <p className="text-red-600 font-bold text-sm">{errorMsg}</p>}
-                      <button type="submit" className="w-full p-3 bg-black text-white font-bold uppercase tracking-widest hover:bg-blue-600 transition-colors">
-                          Unlock
+                      <button 
+                          type="submit" 
+                          disabled={isLoading}
+                          className="w-full p-3 bg-black text-white font-bold uppercase tracking-widest hover:bg-blue-600 transition-colors disabled:opacity-70 flex justify-center items-center gap-2"
+                      >
+                          {isLoading ? <Loader2 className="animate-spin" size={20}/> : 'Secure Login'}
                       </button>
                   </form>
               </div>
@@ -454,11 +517,9 @@ const InvoiceGeneratorView = ({ setIsAuthenticated, isAuthenticated }) => {
       );
   }
 
-  // --- Admin Dashboard (Authenticated) ---
   return (
     <div className="animate-in fade-in duration-500 pt-32 lg:pt-40 min-h-screen bg-gray-100 p-4 lg:p-8">
-       {/* Tool Switcher */}
-       <div className="max-w-7xl mx-auto mb-8 flex justify-center gap-4 print:hidden">
+       <div className="max-w-7xl mx-auto mb-8 flex justify-center gap-4 print:hidden relative">
             <button 
                 onClick={() => setActiveTool('invoice')}
                 className={`px-6 py-2 font-bold uppercase tracking-widest border-2 border-black transition-colors ${activeTool === 'invoice' ? 'bg-black text-white' : 'bg-white text-black hover:bg-gray-200'}`}
@@ -471,12 +532,18 @@ const InvoiceGeneratorView = ({ setIsAuthenticated, isAuthenticated }) => {
             >
                 Contract Generator
             </button>
+            <button 
+                onClick={handleLogout}
+                className="absolute right-0 top-0 px-4 py-2 font-bold uppercase tracking-widest border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white transition-colors flex items-center gap-2"
+                title="Secure Logout"
+            >
+                <LogOut size={16} /> Logout
+            </button>
        </div>
 
        {activeTool === 'contract' ? (
            <ContractGeneratorView />
        ) : showLUT ? (
-        // LUT View Code ...
         <div className="max-w-4xl mx-auto bg-white border-2 border-black p-8 lg:p-12 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.2)] relative">
             <button onClick={() => setShowLUT(false)} className="absolute top-6 right-6 text-red-600 font-bold uppercase hover:underline print:hidden flex items-center gap-2">
                 <X size={20} /> Close LUT
@@ -536,9 +603,7 @@ const InvoiceGeneratorView = ({ setIsAuthenticated, isAuthenticated }) => {
         </div>
        ) : (
        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Invoice Config and Preview Code (Reused from existing) */}
           
-          {/* Configuration Panel */}
           <div className="lg:col-span-4 bg-white border-2 border-black p-6 h-fit print:hidden">
              <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-black uppercase flex items-center gap-2">
@@ -550,7 +615,6 @@ const InvoiceGeneratorView = ({ setIsAuthenticated, isAuthenticated }) => {
              </div>
              
              <div className="space-y-4">
-               {/* New GST Status & Client Type Selectors */}
                <div className="grid grid-cols-2 gap-4 bg-gray-50 p-2 border border-gray-200">
                     <div>
                         <label className="block text-[10px] font-bold uppercase tracking-widest mb-1">My Status</label>
@@ -758,16 +822,19 @@ const InvoiceGeneratorView = ({ setIsAuthenticated, isAuthenticated }) => {
                   <label htmlFor="isPaid" className="text-sm font-bold text-green-600">Mark as PAID</label>
                </div>
 
-               <button onClick={handlePrint} className="w-full py-3 bg-blue-600 text-white font-black uppercase tracking-widest border-2 border-black hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-2 mt-4">
-                  <Printer size={20} /> Print / Save PDF
+               <button 
+                  onClick={handlePrintAndSave} 
+                  disabled={isSaving}
+                  className="w-full py-3 bg-blue-600 text-white font-black uppercase tracking-widest border-2 border-black hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-2 mt-4 disabled:opacity-70"
+               >
+                  {isSaving ? <Loader2 className="animate-spin" size={20}/> : <Printer size={20} />} 
+                  {isSaving ? 'Syncing to Cloud...' : 'Save & Print PDF'}
                </button>
              </div>
           </div>
 
-          {/* Invoice Document ID for printing */}
           <div id="invoice-print-area" className="lg:col-span-8 bg-white border-2 border-black p-8 lg:p-12 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.2)] relative">
              
-             {/* PAID Stamp */}
              {invoiceData.isPaid && (
                  <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-4 border-green-600 text-green-600 font-black text-6xl px-4 py-2 rotate-[-15deg] opacity-60 pointer-events-none select-none z-10 mix-blend-multiply flex flex-col items-center">
                      <span>PAID</span>
@@ -775,7 +842,6 @@ const InvoiceGeneratorView = ({ setIsAuthenticated, isAuthenticated }) => {
                  </div>
              )}
 
-             {/* Header */}
              <div className="flex justify-between items-start border-b-2 border-black pb-4 mb-4 pt-4 relative">
                  <div className="absolute top-0 left-0 -mt-2">
                      <img src="/assets/logo_aa.png" alt="Arun Ammisetty" className="h-24 w-auto object-contain" onError={(e) => e.target.style.display = 'none'} />
@@ -850,9 +916,6 @@ const InvoiceGeneratorView = ({ setIsAuthenticated, isAuthenticated }) => {
                        <span className="font-mono">{invoiceData.currency === 'USD' ? '$' : invoiceData.currency === 'EUR' ? '€' : invoiceData.currency === 'GBP' ? '£' : '₹'}{subtotal.toLocaleString('en-IN')}</span>
                     </div>
                     
-                    {/* isTaxable logic should be passed from calculateTotals for display */}
-                     {/* Show GST breakdown only if invoice type suggests tax AND currency is INR */}
-                     {/* Simplified check for now based on previous logic within view */}
                      {!['Bill of Supply', 'Non-GST Invoice', 'Proforma Invoice', 'Receipt Voucher', 'Refund Voucher', 'Export Invoice', 'International Invoice'].includes(invoiceData.type) && invoiceData.currency === 'INR' && invoiceData.gstStatus === 'Registered' && (
                        <>
                          <div className="flex justify-between text-sm">
