@@ -94,7 +94,7 @@ const App = () => {
   };
 
   return (
-    <div className={`font-sans text-black selection:bg-blue-200 min-h-screen relative ${isHighContrast ? 'bg-black text-white filter contrast-125' : 'bg-white'} ${isLargeText ? 'text-lg' : 'text-base'}`}>
+    <div className={`font-sans min-h-screen relative selection:bg-white selection:text-black ${isHighContrast ? 'filter contrast-125' : ''} ${isLargeText ? 'text-lg' : 'text-base'}`}>
       <Header navigate={navigate} currentView={currentView} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
       
       <main>
@@ -104,63 +104,80 @@ const App = () => {
         {currentView === 'service-detail' && <ServiceDetail activeService={activeService} navigate={navigate} />}
         {currentView === 'projects' && <Projects navigate={navigate} openProject={openProject} />}
         {currentView === 'project-detail' && <ProjectDetail activeProject={activeProject} navigate={navigate} />}
-        {currentView === 'contact' && <Contact />}
+        {currentView === 'contact' && <Contact navigate={navigate} />}
         {currentView === 'blog' && <Blog navigate={navigate} openBlogPost={openBlogPost} />}
         {currentView === 'blog-detail' && <BlogDetail activeBlogPost={activeBlogPost} navigate={navigate} />}
         
         {/* New Interactive Tools */}
-        {currentView === 'estimator' && <PricingEstimator />}
-        {currentView === 'scanner' && <SecurityScanner />}
-        {currentView === 'cv-builder' && <CvBuilder />}
-        {currentView === 'roi' && <RoiCalculator />}
-        {currentView === 'client-portal' && <ClientPortal />}
-        {currentView === 'case-studies' && <CaseStudies />}
-        {currentView === 'testimonials' && <Testimonials />}
-        {currentView === 'bug-bounty' && <BugBounty />}
-        {currentView === 'tech-radar' && <TechRadar />}
-        {currentView === 'book-call' && <BookCall />}
-        {currentView === 'faq' && <Faq />}
-        {currentView === 'newsletter' && <Newsletter />}
-        {currentView === 'training' && <Training />}
-        {currentView === 'resources' && <Resources />}
-        {currentView === 'glossary' && <Glossary />}
-        {currentView === 'media' && <MediaKit />}
-        {currentView === 'partners' && <Partners />}
-        {currentView === 'status' && <Status />}
-        {currentView === 'changelog' && <Changelog />}
-        {currentView === 'accessibility' && <Accessibility isHighContrast={isHighContrast} setIsHighContrast={setIsHighContrast} isLargeText={isLargeText} setIsLargeText={setIsLargeText} />}
+        {currentView === 'estimator' && <PricingEstimator navigate={navigate} />}
+        {currentView === 'scanner' && <SecurityScanner navigate={navigate} />}
+        {currentView === 'cv-builder' && <CvBuilder navigate={navigate} />}
+        {currentView === 'roi' && <RoiCalculator navigate={navigate} />}
+        {currentView === 'client-portal' && <ClientPortal navigate={navigate} />}
+        {currentView === 'case-studies' && <CaseStudies navigate={navigate} />}
+        {currentView === 'testimonials' && <Testimonials navigate={navigate} />}
+        {currentView === 'bug-bounty' && <BugBounty navigate={navigate} />}
+        {currentView === 'tech-radar' && <TechRadar navigate={navigate} />}
+        {currentView === 'book-call' && <BookCall navigate={navigate} />}
+        {currentView === 'faq' && <Faq navigate={navigate} />}
+        {currentView === 'newsletter' && <Newsletter navigate={navigate} />}
+        {currentView === 'training' && <Training navigate={navigate} />}
+        {currentView === 'resources' && <Resources navigate={navigate} />}
+        {currentView === 'glossary' && <Glossary navigate={navigate} />}
+        {currentView === 'media' && <MediaKit navigate={navigate} />}
+        {currentView === 'partners' && <Partners navigate={navigate} />}
+        {currentView === 'status' && <Status navigate={navigate} />}
+        {currentView === 'changelog' && <Changelog navigate={navigate} />}
+        {currentView === 'accessibility' && <Accessibility isHighContrast={isHighContrast} setIsHighContrast={setIsHighContrast} isLargeText={isLargeText} setIsLargeText={setIsLargeText} navigate={navigate} />}
         {currentView === 'sitemap' && <Sitemap navigate={navigate} />}
-        {currentView === 'guestbook' && <Guestbook />}
+        {currentView === 'guestbook' && <Guestbook navigate={navigate} />}
         
         {/* Existing Locked Routes */}
-        {currentView === 'invoice' && activeTool === 'invoice' && <InvoiceGenerator isAuthenticated={isInvoiceAuthenticated} setIsAuthenticated={setIsInvoiceAuthenticated} setActiveTool={setActiveTool} />}
-        {currentView === 'invoice' && activeTool === 'contract' && <ContractGenerator />}
-        {currentView === 'contract' && <ContractGenerator />}
+        {currentView === 'invoice' && activeTool === 'invoice' && <InvoiceGenerator isAuthenticated={isInvoiceAuthenticated} setIsAuthenticated={setIsInvoiceAuthenticated} setActiveTool={setActiveTool} navigate={navigate} />}
+        {currentView === 'invoice' && activeTool === 'contract' && <ContractGenerator navigate={navigate} />}
+        {currentView === 'contract' && <ContractGenerator navigate={navigate} />}
 
         {/* Legal Routes */}
-        {currentView === 'privacy' && <PrivacyPolicy />}
-        {currentView === 'terms' && <TermsOfService />}
-        {currentView === 'cookie-policy' && <CookiePolicy />}
-        {currentView === 'disclaimer' && <Disclaimer />}
-        {currentView === 'acceptable-use' && <AcceptableUse />}
-        {currentView === 'refund-policy' && <RefundPolicy />}
-        {currentView === 'copyright' && <Copyright />}
-        {currentView === 'gdpr' && <GDPR />}
+        {currentView === 'privacy' && <PrivacyPolicy navigate={navigate} />}
+        {currentView === 'terms' && <TermsOfService navigate={navigate} />}
+        {currentView === 'cookie-policy' && <CookiePolicy navigate={navigate} />}
+        {currentView === 'disclaimer' && <Disclaimer navigate={navigate} />}
+        {currentView === 'acceptable-use' && <AcceptableUse navigate={navigate} />}
+        {currentView === 'refund-policy' && <RefundPolicy navigate={navigate} />}
+        {currentView === 'copyright' && <Copyright navigate={navigate} />}
+        {currentView === 'gdpr' && <GDPR navigate={navigate} />}
       </main>
 
-      <Footer navigate={navigate} isHighContrast={isHighContrast} />
+      <Footer navigate={navigate} />
 
-      <div className="fixed bottom-6 right-6 flex flex-col gap-4 z-40 print:hidden">
+      {/* High-End Agency Minimalist Floating Buttons */}
+      <div className="fixed bottom-6 right-6 md:bottom-8 md:right-8 flex flex-col gap-4 z-50 print:hidden">
         {showBackToTop && (
-          <button onClick={()=>window.scrollTo({top:0, behavior:'smooth'})} className="w-12 h-12 bg-black text-white border-2 border-black flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(255,255,255,0.5)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
-            <ArrowUp size={24} />
+          <button 
+            onClick={()=>window.scrollTo({top:0, behavior:'smooth'})} 
+            className="w-12 h-12 bg-[#141414]/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 hover:border-white/30 transition-all duration-300 shadow-2xl rounded-sm"
+            aria-label="Scroll to top"
+          >
+            <ArrowUp size={20} strokeWidth={1.5} />
           </button>
         )}
-        <a href="tel:+918329000442" className="w-12 h-12 bg-blue-600 text-white border-2 border-black flex items-center justify-center shadow-[4px_4px_0px_0px_#000] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
-          <Phone size={24} />
+        <a 
+          href="tel:+918329000442" 
+          className="w-12 h-12 bg-[#141414]/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 hover:border-white/30 transition-all duration-300 shadow-2xl rounded-sm"
+          aria-label="Call directly"
+        >
+          <Phone size={20} strokeWidth={1.5} />
         </a>
-        <a href="https://wa.me/918329000442" target="_blank" rel="noreferrer" className="w-12 h-12 bg-green-500 text-white border-2 border-black flex items-center justify-center shadow-[4px_4px_0px_0px_#000] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
-          <MessageCircle size={24} />
+        <a 
+          href="https://wa.me/918329000424" 
+          target="_blank" 
+          rel="noreferrer" 
+          className="w-12 h-12 bg-[#141414]/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 hover:border-white/30 transition-all duration-300 shadow-2xl rounded-sm group relative"
+          aria-label="WhatsApp Message"
+        >
+          <MessageCircle size={20} strokeWidth={1.5} className="group-hover:scale-110 transition-transform duration-300" />
+          {/* Subtle High-End Glow Effect */}
+          <div className="absolute inset-0 rounded-sm bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none blur-sm"></div>
         </a>
       </div>
     </div>
