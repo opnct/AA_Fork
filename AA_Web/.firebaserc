@@ -1,5 +1,18 @@
 {
   "projects": {
     "default": "aaweb-86b7e"
-  }
+  },
+  "targets": {
+    "aaweb-86b7e": {
+      "hosting": {
+        "aa": [
+          "aaweb-86b7e"
+        ],
+        "aa2": [
+          "aamweb"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }
