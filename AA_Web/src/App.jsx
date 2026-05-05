@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowUp, Phone, MessageCircle } from 'lucide-react';
+import { ArrowUp, Phone, MessageCircle, ArrowLeft } from 'lucide-react';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -46,6 +46,7 @@ import { PrivacyPolicy, TermsOfService, CookiePolicy, Disclaimer, AcceptableUse,
 
 const App = () => {
   const [currentView, setCurrentView] = useState('home');
+  const [viewHistory, setViewHistory] = useState([]); // Global history stack
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeService, setActiveService] = useState(null);
   const [activeBlogPost, setActiveBlogPost] = useState(null);
@@ -69,7 +70,11 @@ const App = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Standard Navigation with History Tracking
   const navigate = (view) => {
+    if (view !== currentView) {
+      setViewHistory(prev => [...prev, currentView]);
+    }
     setCurrentView(view);
     setIsMenuOpen(false);
     if (view === 'services') setActiveService(null);
@@ -77,20 +82,34 @@ const App = () => {
     if (view === 'projects') setActiveProject(null);
   };
 
+  // Specific Deep Link Navigation with History Tracking
   const openService = (service) => {
+    setViewHistory(prev => [...prev, currentView]);
     setActiveService(service);
     setCurrentView('service-detail');
     setIsMenuOpen(false);
   };
 
   const openBlogPost = (post) => {
+    setViewHistory(prev => [...prev, currentView]);
     setActiveBlogPost(post);
     setCurrentView('blog-detail');
   };
 
   const openProject = (project) => {
+    setViewHistory(prev => [...prev, currentView]);
     setActiveProject(project);
     setCurrentView('project-detail');
+  };
+
+  // Global Back Navigation
+  const goBack = () => {
+    if (viewHistory.length > 0) {
+      const previousView = viewHistory[viewHistory.length - 1];
+      setViewHistory(prev => prev.slice(0, -1));
+      setCurrentView(previousView);
+      setIsMenuOpen(false);
+    }
   };
 
   return (
@@ -152,6 +171,19 @@ const App = () => {
 
       {/* High-End Agency Minimalist Floating Buttons */}
       <div className="fixed bottom-6 right-6 md:bottom-8 md:right-8 flex flex-col gap-4 z-50 print:hidden">
+        
+        {/* Global Back Button (Only visible if history exists) */}
+        {viewHistory.length > 0 && (
+          <button 
+            onClick={goBack} 
+            className="w-12 h-12 bg-[#141414]/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 hover:border-white/30 transition-all duration-300 shadow-2xl rounded-sm"
+            aria-label="Go back to previous page"
+          >
+            <ArrowLeft size={20} strokeWidth={1.5} />
+          </button>
+        )}
+
+        {/* Scroll to Top */}
         {showBackToTop && (
           <button 
             onClick={()=>window.scrollTo({top:0, behavior:'smooth'})} 
@@ -161,6 +193,8 @@ const App = () => {
             <ArrowUp size={20} strokeWidth={1.5} />
           </button>
         )}
+        
+        {/* Contact Links */}
         <a 
           href="tel:+918329000442" 
           className="w-12 h-12 bg-[#141414]/80 backdrop-blur-md border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 hover:border-white/30 transition-all duration-300 shadow-2xl rounded-sm"
