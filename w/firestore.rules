@@ -1,0 +1,43 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to verify if the requester is the Super Admin
+    function isSuperAdmin() {
+      return request.auth != null && request.auth.token.email == 'dv3nt@duck.com';
+    }
+
+    // --- Admin Invoices Collection ---
+    // Strictly locks down invoices so ONLY dv3nt@duck.com can view, create, edit, or delete them.
+    match /admin_invoices/{invoiceId} {
+      allow read, write: if isSuperAdmin();
+    }
+
+    // --- Client Portal Collection ---
+    // Allows logged-in clients to read their own project status/files, but ONLY the admin can update them.
+    match /clients/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow write: if isSuperAdmin();
+      
+      // Nested secure files subcollection for the client portal
+      match /secure_files/{fileId} {
+        allow read: if request.auth != null && request.auth.uid == userId;
+        allow write: if isSuperAdmin();
+      }
+    }
+
+    // --- Guestbook Collection ---
+    // Allows public reads and writes so any visitor can leave a message globally.
+    match /guestbook/{messageId} {
+      allow read, write: if true;
+    }
+
+    // --- Global Deny ---
+    // Catches any queries to collections not explicitly defined above and blocks them.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+    
+  }
+}

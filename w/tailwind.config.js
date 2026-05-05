@@ -1,4 +1,4 @@
-/** @type {import('tailwindcss').Config} */
+/** @type {import("tailwindcss").Config} */
 export default {
   content: [
     "./index.html",
@@ -6,12 +6,19 @@ export default {
   ],
   theme: {
     extend: {
-      animation: {
-        'spin-slow': 'spin 20s linear infinite',
+      fontFamily: {
+        sans: ['"Inter"', 'sans-serif'],
+      },
+      colors: {
+        agency: {
+          bg: '#0d0d0d',
+          panel: '#141414',
+          border: 'rgba(255,255,255,0.1)',
+          text: '#f3f4f6',
+          muted: '#9ca3af'
+        }
       }
     },
   },
-  plugins: [
-    require('@tailwindcss/typography'),
-  ],
+  plugins: [],
 }

@@ -2,19 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Base styles to ensure full height and smooth scrolling */
-html, body {
-  scroll-behavior: smooth;
-  height: 100%;
-  margin: 0;
-  padding: 0;
+@layer base {
+  body {
+    /* Hardcoded hex values bypass PostCSS @apply token resolution errors */
+    background-color: #0d0d0d;
+    color: #f3f4f6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  ::selection {
+    background-color: #ffffff;
+    color: #000000;
+  }
 }
 
-/* Custom Scrollbar for the menu */
-.scrollbar-hide::-webkit-scrollbar {
-    display: none;
-}
-.scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+@layer utilities {
+  .section-border {
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  .card-minimal {
+    background-color: #141414;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .card-minimal:hover {
+    border-color: rgba(255,255,255,0.3);
+  }
 }
